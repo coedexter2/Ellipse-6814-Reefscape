@@ -1,0 +1,99 @@
+package frc.robot;
+
+import edu.wpi.first.math.util.Units;
+
+public class Constants {
+    
+
+
+public static final class ModuleConstants {
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
+    public static final double kDriveMotorGearRatio = 1 / 6.75;
+    public static final double kTurningMotorGearRatio = 1 / (150.0/7);
+    public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
+    public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
+    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+    public static final double kPTurning = 0.5;
+}
+
+public static final class DriveConstants {
+
+    public static final double kTrackWidth = edu.wpi.first.math.util.Units.inchesToMeters(19.75);
+    // Distance between right and left wheels
+    public static final double kWheelBase = edu.wpi.first.math.util.Units.inchesToMeters(21.75);
+    // Distance between front and back wheels
+    public static final edu.wpi.first.math.kinematics.SwerveDriveKinematics kDriveKinematics = new edu.wpi.first.math.kinematics.SwerveDriveKinematics(
+            new edu.wpi.first.math.geometry.Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+            new edu.wpi.first.math.geometry.Translation2d(kWheelBase / 2, kTrackWidth / 2),
+            new edu.wpi.first.math.geometry.Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+            new edu.wpi.first.math.geometry.Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+
+    /*
+     * === Welcome to the "Which module is front left?" Center!
+     * 
+     *   FRONT LEFT:  Module 0
+     *   BACK LEFT:   Module 1
+     *   FRONT RIGHT: Module 2
+     *   BACK RIGHT:  Module 3
+     * 
+     *   Swerve drive debugging stats:
+     *   2025: 2 hours
+     */
+
+    public static final int kFrontLeftDriveMotorPort = 7; //mod0
+    public static final int kBackLeftDriveMotorPort = 1;//mod1
+    public static final int kFrontRightDriveMotorPort = 5; //mod2
+    public static final int kBackRightDriveMotorPort = 3;//mod3
+
+    public static final int kFrontLeftTurningMotorPort = 8;//mod0
+    public static final int kBackLeftTurningMotorPort = 2;//mod1
+    public static final int kFrontRightTurningMotorPort = 6; //mod2
+    public static final int kBackRightTurningMotorPort = 4;//mod3
+
+    public static final boolean kFrontLeftTurningEncoderReversed = false;
+    public static final boolean kBackLeftTurningEncoderReversed = false;
+    public static final boolean kFrontRightTurningEncoderReversed = false;
+    public static final boolean kBackRightTurningEncoderReversed = false;
+
+    public static final boolean kFrontLeftDriveEncoderReversed = true;
+    public static final boolean kBackLeftDriveEncoderReversed = true;
+    public static final boolean kFrontRightDriveEncoderReversed = false;
+    public static final boolean kBackRightDriveEncoderReversed = false;
+
+    public static final int kFrontLeftDriveAbsoluteEncoderPort = 2;
+    public static final int kBackLeftDriveAbsoluteEncoderPort = 3;
+    public static final int kFrontRightDriveAbsoluteEncoderPort = 1;
+    public static final int kBackRightDriveAbsoluteEncoderPort = 0;
+
+    public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = true;
+    public static final boolean kBackLeftDriveAbsoluteEncoderReversed = true;
+    public static final boolean kFrontRightDriveAbsoluteEncoderReversed = true;
+    public static final boolean kBackRightDriveAbsoluteEncoderReversed = true;
+
+    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 2.182; //module 2
+    public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 4.356; //module 3
+    public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 3.618; //module 1
+    public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 2.362; //module 0
+
+    public static final double kPhysicalMaxSpeedMetersPerSecond = 8;
+    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+
+    public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 1.25 / 4;
+    public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 2;
+    public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
+    public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
+}
+
+public static final class OIConstants {
+    public static final int kDriverControllerPort = 0;
+
+    public static final int kDriverYAxis = 0;
+    public static final int kDriverXAxis = 1;
+    public static final int kDriverRotAxis = 4;
+    public static final int kDriverFieldOrientedButtonIdx = 1;
+
+    public static final double kDeadband = 0.05;
+}
+
+}
