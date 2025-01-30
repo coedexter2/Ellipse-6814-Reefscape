@@ -1,8 +1,20 @@
 package frc.robot;
 
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.util.Units;
 
 public class Constants {
+
+public static final class OuttakeConstants {
+
+    public static final int kOuttakeMotorPort = 0;
+    public static final int kBeamBreakPort = 0;
+    
+
+    public static final SparkMaxConfig kOuttakeMotorConfig = new SparkMaxConfig();
+    
+}
     
 
 
