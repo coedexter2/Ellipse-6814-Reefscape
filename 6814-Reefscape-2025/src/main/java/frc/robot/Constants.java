@@ -17,6 +17,19 @@ public static final class OuttakeConstants {
 }
     
 
+public static final class ElevatorConstants {
+
+    public static final int kElevatorMotorPort = 0;
+
+    public static final double kPulleyDiameterMeter = Units.inchesToMeters(1.504);
+    public static final double kElevatorMotorGearRatio = 1 / 15;
+    public static final double kBeltPullMeters = kElevatorMotorGearRatio * Math.PI * kPulleyDiameterMeter;
+    public static final double kElevatorEncoderRot2Meters = 2 * kBeltPullMeters;
+
+    public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
+
+}
+
 
 public static final class ModuleConstants {
     public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
