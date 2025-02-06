@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Commands.OutTakeCmd;
+import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.SwerveJoystickCmd;
 import frc.robot.Subsystems.OuttakeSubsystem;
 import frc.robot.Subsystems.SwerveSubsystem;
@@ -26,8 +26,8 @@ public class RobotContainer {
       () -> m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
       () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)));
-      new JoystickButton(m_Joystick, 0).whileTrue(new OutTakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
-
+      new JoystickButton(m_Joystick, 0).whileTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
+      // used .whileTrue because that's what I assumed would be natural but Idk what drive team would want
     configureBindings();
   }
 
