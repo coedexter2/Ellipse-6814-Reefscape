@@ -10,7 +10,7 @@ public static final class OuttakeConstants {
 
     public static final int kOuttakeMotorPort = 0;
     public static final int kBeamBreakPort = 0;
-    
+    public static final double kOuttakeSpeed = .1;
 
     public static final SparkMaxConfig kOuttakeMotorConfig = new SparkMaxConfig();
     
