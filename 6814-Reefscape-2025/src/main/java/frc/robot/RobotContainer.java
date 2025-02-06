@@ -26,8 +26,8 @@ public class RobotContainer {
       () -> m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
       () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)));
-      new JoystickButton(m_Joystick, 0).whileTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
-      // used .whileTrue because that's what I assumed would be natural but Idk what drive team would want
+      new JoystickButton(m_Joystick, 0).onTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
+    
     configureBindings();
   }
 
