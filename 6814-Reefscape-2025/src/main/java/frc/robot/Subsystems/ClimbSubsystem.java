@@ -1,7 +1,5 @@
 package frc.robot.Subsystems;
 
-import java.beans.Encoder;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
