@@ -22,7 +22,7 @@ public class OuttakeCmd extends Command {
     @Override
     public void end(boolean interrupted)
     {
-        
+        m_OuttakeSubsystem.setMotor(0);
     }
     
 
