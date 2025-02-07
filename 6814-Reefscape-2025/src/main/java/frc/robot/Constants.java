@@ -20,9 +20,9 @@ public static final class OuttakeConstants {
 public static final class ClimbConstants {
 
     public static final int kClimbMotorID = 0;
+    public static final int kLimitSwitchPort = 0;
     public static final SparkMaxConfig kClimbMotorConfig = new SparkMaxConfig();
     public static final double kClimbEncoderRotToMeters = 0.0; // fix this
-
 }
 
 public static final class ElevatorConstants {

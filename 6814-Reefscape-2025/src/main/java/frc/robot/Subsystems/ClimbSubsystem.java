@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
@@ -13,12 +14,12 @@ import frc.robot.Constants.ClimbConstants;
 public class ClimbSubsystem extends SubsystemBase {
     private final SparkMax m_climbMotor = new SparkMax(ClimbConstants.kClimbMotorID, MotorType.kBrushless);
     private final RelativeEncoder m_climbEncoder = m_climbMotor.getEncoder();
-    
+    private final DigitalInput m_Limit;
    
     public ClimbSubsystem() {
 
         m_climbMotor.configure(ClimbConstants.kClimbMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+        m_Limit = new DigitalInput(ClimbConstants.kLimitSwitchPort);
     }
 
     public void setSpeed(double speed) {
@@ -39,4 +40,8 @@ public class ClimbSubsystem extends SubsystemBase {
 
     }
 
+    public boolean isHome()
+    {
+        return m_Limit.get();
+    }
 }
