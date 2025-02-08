@@ -3,7 +3,6 @@ package frc.robot.Subsystems;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -63,9 +62,9 @@ public class SwerveSubsystem extends SubsystemBase {
         
     
     
-        public static SwerveDrivePoseEstimator m_poseEstimator = 
+        private final SwerveDrivePoseEstimator m_poseEstimator = 
             new SwerveDrivePoseEstimator(DriveConstants.kDriveKinematics, getRotation2d(), new SwerveModulePosition[]{
-                        frontLeft.getPosition(),
+                    frontLeft.getPosition(),
                     backLeft.getPosition(),
                     frontRight.getPosition(),
                     backRight.getPosition()
@@ -120,8 +119,8 @@ public class SwerveSubsystem extends SubsystemBase {
                     return Math.IEEEremainder(gyro.getAngle(), 360);
                 }
             
-                public static Rotation2d getRotation2d() {
-        return m_poseEstimator.getEstimatedPosition().getRotation();
+                public Rotation2d getRotation2d() {
+                    return Rotation2d.fromDegrees(getHeading());
     }
 
     public Pose2d getPose() {
@@ -139,7 +138,7 @@ public class SwerveSubsystem extends SubsystemBase {
         pose);  
     }
 
-    public static void visionUpdate(Pose2d pose, double latency) {
+    public void visionUpdate(Pose2d pose, double latency) {
         m_poseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp() - latency);
 
     }

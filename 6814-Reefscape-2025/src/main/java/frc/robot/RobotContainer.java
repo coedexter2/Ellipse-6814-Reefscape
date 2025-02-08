@@ -22,16 +22,23 @@ public class RobotContainer {
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
-
+  /* 
   private final ParallelCommandGroup Swerve = new ParallelCommandGroup(new SwerveJoystickCmd(
     m_Swerve,
     () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
     () -> m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
     () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
-    () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate());
+    () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate(m_Swerve));
+  */
+
 
   public RobotContainer() {
-    m_Swerve.setDefaultCommand(Swerve);
+    m_Swerve.setDefaultCommand(new SwerveJoystickCmd(
+      m_Swerve,
+      () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
+      () -> m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
+      () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
+      () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)));
 
     new JoystickButton(m_Joystick, 1).onTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
     new JoystickButton(m_Joystick, 2).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1.5));
