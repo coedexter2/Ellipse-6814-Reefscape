@@ -10,9 +10,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Commands.IntakeCmd;
-import frc.robot.Commands.OuttakeCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Commands.LimelightUpdate;
 import frc.robot.Commands.SwerveJoystickCmd;
@@ -22,16 +19,16 @@ import frc.robot.Subsystems.SwerveSubsystem;
 public class RobotContainer {
   private final SwerveSubsystem m_Swerve = new SwerveSubsystem();
 
-  private final Joystick m_Joysitck = new Joystick(Constants.OIConstants.kDriverControllerPort);
+  private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
 
   private final ParallelCommandGroup Swerve = new ParallelCommandGroup(new SwerveJoystickCmd(
     m_Swerve,
-    () -> -m_Joysitck.getRawAxis(Constants.OIConstants.kDriverXAxis),
-    () -> m_Joysitck.getRawAxis(Constants.OIConstants.kDriverYAxis),
-    () -> -m_Joysitck.getRawAxis(Constants.OIConstants.kDriverRotAxis),
-    () -> !m_Joysitck.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate());
+    () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
+    () -> m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
+    () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
+    () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate());
 
   public RobotContainer() {
     m_Swerve.setDefaultCommand(Swerve);
