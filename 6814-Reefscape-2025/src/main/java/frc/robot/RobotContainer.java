@@ -7,15 +7,24 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.IntakeCmd;
+import frc.robot.Commands.OuttakeCmd;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Commands.IntakeCmd;
+import frc.robot.Commands.OuttakeCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Commands.LimelightUpdate;
 import frc.robot.Commands.SwerveJoystickCmd;
+import frc.robot.Subsystems.OuttakeSubsystem;
 import frc.robot.Subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   private final SwerveSubsystem m_Swerve = new SwerveSubsystem();
 
   private final Joystick m_Joysitck = new Joystick(Constants.OIConstants.kDriverControllerPort);
+  private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
+
 
   private final ParallelCommandGroup Swerve = new ParallelCommandGroup(new SwerveJoystickCmd(
     m_Swerve,
@@ -27,6 +36,8 @@ public class RobotContainer {
   public RobotContainer() {
     m_Swerve.setDefaultCommand(Swerve);
 
+    new JoystickButton(m_Joystick, 1).onTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
+    new JoystickButton(m_Joystick, 2).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1.5));
 
     configureBindings();
   }
