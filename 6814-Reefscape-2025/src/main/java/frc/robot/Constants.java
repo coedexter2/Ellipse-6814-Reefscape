@@ -11,7 +11,7 @@ public class Constants {
 
     public static final class OuttakeConstants {
 
-      public static final int kOuttakeMotorPort = 0;
+        public static final int kOuttakeMotorPort = 0;
         public static final int kBeamBreakPort = 0;
         public static final double kOuttakeSpeed = .1;
         public static final double kIntakeSpeed = .1;
@@ -26,6 +26,9 @@ public class Constants {
         public static final int kLimitSwitchPort = 0;
         public static final SparkMaxConfig kClimbMotorConfig = new SparkMaxConfig();
         public static final double kClimbEncoderRotToMeters = 0.0; // fix this
+    
+        public static final double kClimbSpeed = 1;
+        public static final double kClimbSetpoint = 0;
     }
 
     public static final class ElevatorConstants {
