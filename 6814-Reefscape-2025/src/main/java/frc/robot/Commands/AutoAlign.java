@@ -1,9 +1,9 @@
 package frc.robot.Commands;
-import java.lang.reflect.Array;
-import java.util.List;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.OuttakeSubsystem;
+import frc.robot.Constants;
 import frc.robot.Subsystems.SwerveSubsystem;
 
 public class AutoAlign extends Command {
@@ -18,7 +18,8 @@ public class AutoAlign extends Command {
     @Override
     public void execute() 
     {
-        m_SwerveSubsystem.getPose();
+        // made the get setpoint thing so it will return the num 0-7 of the closest midpoint on feild
+        // now its just a matter of adding what will drive it to that set point
     }
 
     @Override
@@ -34,10 +35,38 @@ public class AutoAlign extends Command {
         return false;
     }
 
-    public String getSetPoint(list point[list axis[]])
+    public int getSetPoint()
     {
-        for(i=0;i<Length())
-        return "ababab";
+        var alliance = DriverStation.getAlliance().get();
+        double minDistance = 2000000000;
+        int point = -1;
+        if(alliance == Alliance.Red)
+        {
+            for(int i = 0;i < Constants.FeildConstants.kRedMidpointCords.length;i++)
+            {
+                double distance = getDistance(Constants.FeildConstants.kRedMidpointCords[i][0], Constants.FeildConstants.kRedMidpointCords[i][1]);
+                if(distance<minDistance)
+                {
+                    minDistance = distance;
+                    point = i;
+                }
+            }
+        }
+
+        else
+        {
+            for(int i = 0;i < Constants.FeildConstants.kRedMidpointCords.length;i++)
+            {
+                double distance = getDistance(Constants.FeildConstants.kBlueMidpointCords[i][0], Constants.FeildConstants.kBlueMidpointCords[i][1]);
+                if(distance<minDistance)
+                {
+                    minDistance = distance;
+                    point = i;
+                }
+            }
+        }
+
+        return point;
     }
 
     public double getDistance(double x, double y)
