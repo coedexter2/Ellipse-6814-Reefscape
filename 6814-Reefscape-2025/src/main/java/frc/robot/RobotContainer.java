@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -30,6 +31,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Commands.LimelightUpdate;
@@ -42,11 +44,11 @@ public class RobotContainer {
   private final SwerveSubsystem m_Swerve = new SwerveSubsystem();
 
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
-  private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
+  //private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
-  private final ClimbSubsystem m_Climb = new ClimbSubsystem();
+  //private final ClimbSubsystem m_Climb = new ClimbSubsystem();
 
   /* 
   private final ParallelCommandGroup Swerve = new ParallelCommandGroup(new SwerveJoystickCmd(
@@ -66,19 +68,20 @@ public class RobotContainer {
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
       () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)));
 
-    new JoystickButton(m_Joystick, 1).onTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
-    new JoystickButton(m_Joystick, 2).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1.5));
+    //new JoystickButton(m_Joystick, 1).onTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
+    //new JoystickButton(m_Joystick, 2).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1.5));
     
-    new JoystickButton(m_Joystick, 3).onTrue(new ClimbCmd(m_Climb,
-                                                                       ClimbConstants.kClimbSetpoint,
-                                                                       ClimbConstants.kClimbSpeed)
-                                                                       .onlyIf(() -> (GamePhase.currentPhase == Phase.ENDGAME)));
+    //new JoystickButton(m_Joystick, 3).onTrue(new ClimbCmd(m_Climb,
+    //                                                                   ClimbConstants.kClimbSetpoint,
+    //                                                                   ClimbConstants.kClimbSpeed)
+    //                                                                  .onlyIf(() -> (GamePhase.currentPhase == Phase.ENDGAME)));
 
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
 
-    
+    NamedCommands.registerCommand("test", new PrintCommand("test"));
+
     configureBindings();
   }
 
