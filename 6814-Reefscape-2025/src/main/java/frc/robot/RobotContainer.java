@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Commands.ClimbCmd;
+import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
@@ -32,15 +33,17 @@ import frc.robot.Commands.OuttakeCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.LimelightUpdate;
 import frc.robot.Commands.SwerveJoystickCmd;
 import frc.robot.Subsystems.ClimbSubsystem;
+import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.OuttakeSubsystem;
 import frc.robot.Subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   private final SwerveSubsystem m_Swerve = new SwerveSubsystem();
-
+  
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
@@ -72,7 +75,7 @@ public class RobotContainer {
     new JoystickButton(m_Joystick, 3).onTrue(new ClimbCmd(m_Climb,
                                                                        ClimbConstants.kClimbSetpoint,
                                                                        ClimbConstants.kClimbSpeed)
-                                                                       .onlyIf(() -> (GamePhase.currentPhase == Phase.ENDGAME)));
+                                                                       .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
 
 
     autoChooser = AutoBuilder.buildAutoChooser();
