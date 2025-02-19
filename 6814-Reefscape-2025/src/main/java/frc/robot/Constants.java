@@ -129,4 +129,10 @@ public static final class OIConstants {
     public static final double kDeadband = 0.05;
 }
 
+public static final class FeildConstants
+{
+    public static final int kBlueMidpointCords[][] = {{1,1},{1,1},{1,1},{1,1},{1,1},{1,1}};
+    public static final int kRedMidpointCords[][] = {{1,1},{1,1},{1,1},{1,1},{1,1},{1,1}};
+}
+
 }
