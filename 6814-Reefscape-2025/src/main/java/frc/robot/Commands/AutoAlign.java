@@ -1,5 +1,14 @@
 package frc.robot.Commands;
 
+import java.util.List;
+
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,8 +27,34 @@ public class AutoAlign extends Command {
     @Override
     public void execute() 
     {
-        // made the get setpoint thing so it will return the num 0-7 of the closest midpoint on feild
-        // now its just a matter of adding what will drive it to that set point
+        var alliance = DriverStation.getAlliance().get();
+        double x,y,degrees;
+        if(alliance == Alliance.Red)
+        {
+            x = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][0];
+            y = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][1];
+            degrees = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][2];
+        }
+        else
+        {
+            x = Constants.FeildConstants.kBlueMidpointCords[getSetPoint()][0];
+            y = Constants.FeildConstants.kBlueMidpointCords[getSetPoint()][1];
+            degrees = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][2];
+        }
+        List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+            new Pose2d(x, y, Rotation2d.fromDegrees(Math.atan2(m_SwerveSubsystem.getPose().getX()-x,m_SwerveSubsystem.getPose().getY()-y)))
+        );
+
+        PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
+    
+
+        PathPlannerPath path = new PathPlannerPath(
+                waypoints,
+                constraints,
+                null,
+                new GoalEndState(0.0, Rotation2d.fromDegrees(degrees)) 
+        );
+        path.preventFlipping = true;
     }
 
     @Override
