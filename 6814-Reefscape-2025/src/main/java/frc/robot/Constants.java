@@ -39,6 +39,7 @@ public class Constants {
         public static final double kElevatorMotorGearRatio = 1 / 15;
         public static final double kBeltPullMeters = kElevatorMotorGearRatio * Math.PI * kPulleyDiameterMeter;
         public static final double kElevatorEncoderRot2Meters = 2 * kBeltPullMeters;
+        public static final double kElevatorHeightLimit = 1.2;
 
         public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
 
