@@ -17,30 +17,35 @@ import frc.robot.Subsystems.SwerveSubsystem;
 
 public class AutoAlign extends Command {
     private final SwerveSubsystem m_SwerveSubsystem;
+    int allianceSide;
+    int direction;
 
-    public AutoAlign(SwerveSubsystem subsystem) 
+
+    public AutoAlign(SwerveSubsystem subsystem, int direction) 
     {
         m_SwerveSubsystem = subsystem;
+        this.direction = direction;
+        var alliance = DriverStation.getAlliance().get();
+
+     if (alliance == Alliance.Red)
+     {
+        allianceSide = 1;
+     }
+     else
+     {
+        allianceSide = 0;
+     }
         addRequirements(subsystem);
     }
 
     @Override
     public void execute() 
     {
-        var alliance = DriverStation.getAlliance().get();
         double x,y,degrees;
-        if(alliance == Alliance.Red)
-        {
-            x = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][0];
-            y = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][1];
-            degrees = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][2];
-        }
-        else
-        {
-            x = Constants.FeildConstants.kBlueMidpointCords[getSetPoint()][0];
-            y = Constants.FeildConstants.kBlueMidpointCords[getSetPoint()][1];
-            degrees = Constants.FeildConstants.kRedMidpointCords[getSetPoint()][2];
-        }
+            x = Constants.FeildConstants.kPointCords[allianceSide][direction][getSetPoint()][0];
+            y = Constants.FeildConstants.kPointCords[allianceSide][direction][getSetPoint()][1];
+            degrees = Constants.FeildConstants.kPointCords[allianceSide][direction][getSetPoint()][2];
+
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
             new Pose2d(x, y, Rotation2d.fromDegrees(Math.atan2(m_SwerveSubsystem.getPose().getX()-x,m_SwerveSubsystem.getPose().getY()-y)))
         );
@@ -72,34 +77,17 @@ public class AutoAlign extends Command {
 
     public int getSetPoint()
     {
-        var alliance = DriverStation.getAlliance().get();
         double minDistance = 2000000000;
         int point = -1;
-        if(alliance == Alliance.Red)
-        {
-            for(int i = 0;i < Constants.FeildConstants.kRedMidpointCords.length;i++)
+            for(int i = 0;i < Constants.FeildConstants.kMidpointCords.length;i++)
             {
-                double distance = getDistance(Constants.FeildConstants.kRedMidpointCords[i][0], Constants.FeildConstants.kRedMidpointCords[i][1]);
+                double distance = getDistance(Constants.FeildConstants.kMidpointCords[allianceSide][i][0], Constants.FeildConstants.kMidpointCords[allianceSide][i][1]);
                 if(distance<minDistance)
                 {
                     minDistance = distance;
                     point = i;
                 }
             }
-        }
-
-        else
-        {
-            for(int i = 0;i < Constants.FeildConstants.kRedMidpointCords.length;i++)
-            {
-                double distance = getDistance(Constants.FeildConstants.kBlueMidpointCords[i][0], Constants.FeildConstants.kBlueMidpointCords[i][1]);
-                if(distance<minDistance)
-                {
-                    minDistance = distance;
-                    point = i;
-                }
-            }
-        }
 
         return point;
     }

@@ -168,8 +168,16 @@ public class Constants {
 
 public static final class FeildConstants
 {
-    public static final int kBlueMidpointCords[][] = {{1,1},{1,1},{1,1},{1,1},{1,1},{1,1}};
-    public static final int kRedMidpointCords[][] = {{1,1},{1,1},{1,1},{1,1},{1,1},{1,1}};
+    // point cords: 0: blue, 1:red and then within that 0:right 1:left, and then within that 0: x 1: y 2: heading
+    // point cords: 0: blue, 1:red, and then within that 0: x 1: y 2: heading
+    public static final double[][][][] kPointCords = {{{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
+                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}},
+
+                                                    {{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
+                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}}};
+
+    public static final double[][][] kMidpointCords = {{{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}},
+                                                    {{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}}}; 
 }
 
 }
