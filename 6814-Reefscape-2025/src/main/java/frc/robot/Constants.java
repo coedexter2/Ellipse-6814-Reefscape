@@ -54,6 +54,12 @@ public class Constants {
         public static final double kP = 0.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
+
+        // LEVELS
+        public static final double kFirstLevel = 0.0;
+        public static final double kSecondLevel = 0.0;
+        public static final double kThirdLevel = 0.0;
+        public static final double kFourthLevel = 0.0;
     }
 
     public static final class ModuleConstants {
