@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ClimbConstants;
+import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.ClimbCmd;
 import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Constants.AutoConstants;
@@ -90,8 +91,10 @@ public class RobotContainer {
                                                                        ClimbConstants.kClimbSetpoint,
                                                                        ClimbConstants.kClimbSpeed)
                                                                        .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
-                                                                      
 
+    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
+    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 1));
+   
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
 
