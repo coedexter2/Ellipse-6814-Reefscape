@@ -45,7 +45,7 @@ import frc.robot.Subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   private final SwerveSubsystem m_Swerve = new SwerveSubsystem();
-  
+  private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
@@ -65,7 +65,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_Swerve.setDefaultCommand(new SwerveJoystickCmd(
-      m_Swerve,
+      m_Swerve, m_Elevator,
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
       () -> m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
@@ -78,7 +78,7 @@ public class RobotContainer {
                                                                        ClimbConstants.kClimbSetpoint,
                                                                        ClimbConstants.kClimbSpeed)
                                                                        .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
-
+                                                                      
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
