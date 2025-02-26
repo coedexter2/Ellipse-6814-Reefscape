@@ -71,8 +71,8 @@ public class SwerveSubsystem extends SubsystemBase {
     
         private Field2d field = new Field2d();
 
-    
-    
+        
+
         private final SwerveDrivePoseEstimator m_poseEstimator = 
             new SwerveDrivePoseEstimator(DriveConstants.kDriveKinematics, getRotation2d(), new SwerveModulePosition[]{
                     frontLeft.getPosition(),
@@ -129,7 +129,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 }
             
                 public double getHeading() {
-                    return Math.IEEEremainder(gyro.getAngle(), 360);
+                    return -Math.IEEEremainder(gyro.getAngle(), 360);
                 }
             
                 public Rotation2d getRotation2d() {
