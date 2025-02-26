@@ -7,7 +7,6 @@ package frc.robot;
 import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -25,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ClimbConstants;
+import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.ClimbCmd;
 import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Constants.AutoConstants;
@@ -32,26 +32,27 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.LimelightUpdate;
 import frc.robot.Commands.SwerveJoystickCmd;
 import frc.robot.Subsystems.ClimbSubsystem;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.OuttakeSubsystem;
 import frc.robot.Subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   private final SwerveSubsystem m_Swerve = new SwerveSubsystem();
-  
+  private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
-  //private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
+  private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
-  //private final ClimbSubsystem m_Climb = new ClimbSubsystem();
+  private final ClimbSubsystem m_Climb = new ClimbSubsystem();
 
   /* 
   private final ParallelCommandGroup Swerve = new ParallelCommandGroup(new SwerveJoystickCmd(
@@ -62,10 +63,21 @@ public class RobotContainer {
     () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate(m_Swerve));
   */
 
+  public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
+  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+  
+  public Command ElevateOutTwo = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kSecondLevel)
+  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+
+  public Command ElevateOutThird = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kThirdLevel)
+  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+
+  public Command ElevateOutFourth = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFourthLevel)
+  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
 
   public RobotContainer() {
     m_Swerve.setDefaultCommand(new SwerveJoystickCmd(
-      m_Swerve,
+      m_Swerve, m_Elevator,
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
@@ -79,12 +91,13 @@ public class RobotContainer {
                                                                        //ClimbConstants.kClimbSpeed)
                                                                        //.onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
 
-
+    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
+    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 1));
+   
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
 
-    NamedCommands.registerCommand("test", new PrintCommand("test"));
-
+    
     configureBindings();
   }
 

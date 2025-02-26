@@ -39,6 +39,7 @@ public class Constants {
         public static final double kElevatorMotorGearRatio = 1 / 15;
         public static final double kBeltPullMeters = kElevatorMotorGearRatio * Math.PI * kPulleyDiameterMeter;
         public static final double kElevatorEncoderRot2Meters = 2 * kBeltPullMeters;
+        public static final double kElevatorHeightLimit = 0.0;
 
         public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
 
@@ -54,6 +55,12 @@ public class Constants {
         public static final double kP = 0.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
+
+        // LEVELS
+        public static final double kFirstLevel = 0.0;
+        public static final double kSecondLevel = 0.0;
+        public static final double kThirdLevel = 0.0;
+        public static final double kFourthLevel = 0.0;
     }
 
     public static final class ModuleConstants {
@@ -164,6 +171,20 @@ public class Constants {
         public static final int kDriverFieldOrientedButtonIdx = 1;
 
         public static final double kDeadband = 0.1;
+}
+
+public static final class FeildConstants
+{
+    // point cords: 0: blue, 1:red and then within that 0:right 1:left, and then within that 0: x 1: y 2: heading
+    // point cords: 0: blue, 1:red, and then within that 0: x 1: y 2: heading
+    public static final double[][][][] kPointCords = {{{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
+                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}},
+
+                                                    {{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
+                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}}};
+
+    public static final double[][][] kMidpointCords = {{{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}},
+                                                    {{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}}}; 
 }
 
 }
