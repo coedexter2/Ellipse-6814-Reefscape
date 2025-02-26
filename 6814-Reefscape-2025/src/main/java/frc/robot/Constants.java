@@ -173,7 +173,7 @@ public class Constants {
         public static final double kDeadband = 0.1;
 }
 
-public static final class FeildConstants
+public static final class FieldConstants
 {
     // point cords: 0: blue, 1:red and then within that 0:right 1:left, and then within that 0: x 1: y 2: heading
     // point cords: 0: blue, 1:red, and then within that 0: x 1: y 2: heading
