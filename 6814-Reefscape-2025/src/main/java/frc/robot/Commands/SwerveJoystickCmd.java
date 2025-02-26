@@ -47,7 +47,7 @@ public class SwerveJoystickCmd extends Command {
         double ySpeed = ySpdFunction.get();
         double turningSpeed = -turningSpdFunction.get();
         
-        if (m_ElevatorSubsystem.getEncoderPosition() < ElevatorConstants.kElevatorHeightLimit) {
+        if (m_ElevatorSubsystem.getEncoderPosition() <= ElevatorConstants.kThirdLevel) {
             // 2. Apply deadband
             xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
             ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
