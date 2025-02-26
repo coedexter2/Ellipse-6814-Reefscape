@@ -57,6 +57,12 @@ public class Constants {
         public static final double kD = 0.0;
 
         // LEVELS
+
+        /* level 1, 1 ft 6 inch off ground or 46 cm
+         * Level 2, 2 ft 7⅞ inch off ground or 81 cm
+         * Level 3, 3 ft 11⅝ inch off ground or 121 cm
+         * Level 4, 6 ft off ground or 183 cm
+         */ 
         public static final double kFirstLevel = 0.0;
         public static final double kSecondLevel = 0.0;
         public static final double kThirdLevel = 0.0;
