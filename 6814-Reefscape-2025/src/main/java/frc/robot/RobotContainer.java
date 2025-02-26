@@ -52,7 +52,6 @@ public class RobotContainer {
   private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
-  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -67,6 +66,7 @@ public class RobotContainer {
     () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate(m_Swerve));
   */
 
+   
   public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
   .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
   
@@ -78,10 +78,11 @@ public class RobotContainer {
 
   public Command ElevateOutFourth = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFourthLevel)
   .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+  
 
   public RobotContainer() {
     m_Swerve.setDefaultCommand(new SwerveJoystickCmd(
-      m_Swerve, m_Elevator,
+      m_Swerve,
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
@@ -96,10 +97,8 @@ public class RobotContainer {
                                                                        .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
 
     new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
-    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 1));
+    new JoystickButton(m_Joystick, 5).onTrue(new AutoAlign(m_Swerve, 1));
    
-    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
-    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 1));
    
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
