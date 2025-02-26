@@ -24,12 +24,10 @@ public class SwerveJoystickCmd extends Command {
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final ElevatorSubsystem m_ElevatorSubsystem;
     public SwerveJoystickCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
-    private final ElevatorSubsystem m_ElevatorSubsystem;
-    public SwerveJoystickCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
             Supplier<Boolean> fieldOrientedFunction) {
+                
         this.swerveSubsystem = swerveSubsystem;
-        this.m_ElevatorSubsystem = elevatorSubsystem;
         this.m_ElevatorSubsystem = elevatorSubsystem;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;

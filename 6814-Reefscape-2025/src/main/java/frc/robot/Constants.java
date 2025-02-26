@@ -187,18 +187,4 @@ public static final class FeildConstants
                                                     {{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}}}; 
 }
 
-public static final class FeildConstants
-{
-    // point cords: 0: blue, 1:red and then within that 0:right 1:left, and then within that 0: x 1: y 2: heading
-    // point cords: 0: blue, 1:red, and then within that 0: x 1: y 2: heading
-    public static final double[][][][] kPointCords = {{{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}},
-
-                                                    {{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}}};
-
-    public static final double[][][] kMidpointCords = {{{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}}}; 
-}
-
 }
