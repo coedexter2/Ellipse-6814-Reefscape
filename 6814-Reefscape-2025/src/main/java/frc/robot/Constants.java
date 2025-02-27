@@ -59,9 +59,9 @@ public class Constants {
         // LEVELS
 
         public static final double kFirstLevel = 0.0;
-        public static final double kSecondLevel = (12.49 * 0.0254);
-        public static final double kThirdLevel = (28.33 * 0.0254);
-        public static final double kFourthLevel = (53.36 * 0.0254);
+        public static final double kSecondLevel = Units.inchesToMeters(12.49);
+        public static final double kThirdLevel = Units.inchesToMeters(28.33);
+        public static final double kFourthLevel = Units.inchesToMeters(53.36);
     }
 
     public static final class ModuleConstants {
