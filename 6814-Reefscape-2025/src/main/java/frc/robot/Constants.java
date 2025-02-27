@@ -58,21 +58,10 @@ public class Constants {
 
         // LEVELS
 
-        /* Base height of 19.75 inches or 31.4025 revolutions 50.165 cm
-         * 1.59 rev to inch
-         * level 1, 1 ft 6 inch off ground or 46 cm
-         * JUST GO BACK TO BASE LEVEL
-         * Level 2, 2 ft 7⅞ inch off ground or 81 cm
-         * 50.68125 revolutions from base
-         * Level 3, 3 ft 11⅝ inch off ground or 121 cm
-         * 75.72375 revolutions from base
-         * Level 4, 6 ft off ground or 183 cm
-         * 114.48 revolutions from base
-         */ 
         public static final double kFirstLevel = 0.0;
-        public static final double kSecondLevel = 0.30835;
-        public static final double kThirdLevel = 0.70835;
-        public static final double kFourthLevel = 1.32835;
+        public static final double kSecondLevel = (12.49 * 0.0254);
+        public static final double kThirdLevel = (28.33 * 0.0254);
+        public static final double kFourthLevel = (53.36 * 0.0254);
     }
 
     public static final class ModuleConstants {
