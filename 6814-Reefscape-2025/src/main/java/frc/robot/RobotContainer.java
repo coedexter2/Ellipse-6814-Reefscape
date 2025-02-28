@@ -96,8 +96,8 @@ public class RobotContainer {
                                                                        ClimbConstants.kClimbSpeed)
                                                                        .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
 
-    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
-    new JoystickButton(m_Joystick, 5).onTrue(new AutoAlign(m_Swerve, 1));
+    new JoystickButton(m_Joystick, 4).whileTrue(new AutoAlign(m_Swerve, 0));
+    new JoystickButton(m_Joystick, 5).whileTrue(new AutoAlign(m_Swerve, 1));
    
    
     autoChooser = AutoBuilder.buildAutoChooser();
