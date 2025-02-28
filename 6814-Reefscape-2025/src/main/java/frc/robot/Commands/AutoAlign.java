@@ -2,7 +2,6 @@ package frc.robot.Commands;
 
 import java.util.List;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -43,15 +42,13 @@ public class AutoAlign extends Command {
     public void execute() 
     {
         double x,y,degrees;
+            x = Constants.FeildConstants.kPointCords[allianceSide][direction][getSetPoint()][0];
+            y = Constants.FeildConstants.kPointCords[allianceSide][direction][getSetPoint()][1];
+            degrees = Constants.FeildConstants.kPointCords[allianceSide][direction][getSetPoint()][2];
 
-        x = Constants.FieldConstants.kPointCords[allianceSide][direction][getSetPoint()][0];
-        y = Constants.FieldConstants.kPointCords[allianceSide][direction][getSetPoint()][1];
-        degrees = Constants.FieldConstants.kPointCords[allianceSide][direction][getSetPoint()][2];
-
-        Pose2d startPose = m_SwerveSubsystem.getPose();
-        Pose2d finalPose =  new Pose2d(x, y, Rotation2d.fromDegrees(Math.atan2(m_SwerveSubsystem.getPose().getX()-x,m_SwerveSubsystem.getPose().getY()-y)));
-
-        List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, finalPose);
+        List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+            new Pose2d(x, y, Rotation2d.fromDegrees(Math.atan2(m_SwerveSubsystem.getPose().getX()-x,m_SwerveSubsystem.getPose().getY()-y)))
+        );
 
         PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
     
@@ -63,8 +60,6 @@ public class AutoAlign extends Command {
                 new GoalEndState(0.0, Rotation2d.fromDegrees(degrees)) 
         );
         path.preventFlipping = true;
-
-        AutoBuilder.followPath(path).schedule();
     }
 
     @Override
@@ -84,9 +79,9 @@ public class AutoAlign extends Command {
     {
         double minDistance = 2000000000;
         int point = -1;
-            for(int i = 0;i < Constants.FieldConstants.kMidpointCords.length;i++)
+            for(int i = 0;i < Constants.FeildConstants.kMidpointCords.length;i++)
             {
-                double distance = getDistance(Constants.FieldConstants.kMidpointCords[allianceSide][i][0], Constants.FieldConstants.kMidpointCords[allianceSide][i][1]);
+                double distance = getDistance(Constants.FeildConstants.kMidpointCords[allianceSide][i][0], Constants.FeildConstants.kMidpointCords[allianceSide][i][1]);
                 if(distance<minDistance)
                 {
                     minDistance = distance;

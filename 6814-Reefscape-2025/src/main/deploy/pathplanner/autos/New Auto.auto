@@ -7,19 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "backward"
+            "pathName": "New Path"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "test"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "forward"
+            "pathName": "Test Path"
           }
         }
       ]
