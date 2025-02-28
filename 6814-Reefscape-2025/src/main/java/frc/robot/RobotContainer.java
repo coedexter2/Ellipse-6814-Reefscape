@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Commands.AutoAlign;
+import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.ClimbCmd;
 import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Constants.AutoConstants;
@@ -34,11 +35,13 @@ import frc.robot.Commands.OuttakeCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.LimelightUpdate;
 import frc.robot.Commands.SwerveJoystickCmd;
 import frc.robot.Subsystems.ClimbSubsystem;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.OuttakeSubsystem;
@@ -49,7 +52,6 @@ public class RobotContainer {
   private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
-  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -64,23 +66,25 @@ public class RobotContainer {
     () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate(m_Swerve));
   */
 
-  public Command ElevateOutOne = new ElevatorCommand(m_ElevatorSubsystem, Constants.ElevatorConstants.kFirstLevel)
+   
+  public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
   .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
   
-  public Command ElevateOutTwo = new ElevatorCommand(m_ElevatorSubsystem, Constants.ElevatorConstants.kSecondLevel)
+  public Command ElevateOutTwo = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kSecondLevel)
   .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
 
-  public Command ElevateOutThird = new ElevatorCommand(m_ElevatorSubsystem, Constants.ElevatorConstants.kThirdLevel)
+  public Command ElevateOutThird = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kThirdLevel)
   .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
 
-  public Command ElevateOutFourth = new ElevatorCommand(m_ElevatorSubsystem, Constants.ElevatorConstants.kFourthLevel)
+  public Command ElevateOutFourth = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFourthLevel)
   .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+  
 
   public RobotContainer() {
     m_Swerve.setDefaultCommand(new SwerveJoystickCmd(
-      m_Swerve, m_Elevator,
+      m_Swerve,
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
-      () -> m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
+      () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
       () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)));
 
@@ -92,14 +96,14 @@ public class RobotContainer {
                                                                        ClimbConstants.kClimbSpeed)
                                                                        .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
 
-    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0).
-                                            until(() -> !m_Joystick.getRawButton(4)));
-    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 1).
-                                            until(() -> !m_Joystick.getRawButton(4)));
+    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
+    new JoystickButton(m_Joystick, 5).onTrue(new AutoAlign(m_Swerve, 1));
+   
    
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
 
+    
     
     configureBindings();
   }
