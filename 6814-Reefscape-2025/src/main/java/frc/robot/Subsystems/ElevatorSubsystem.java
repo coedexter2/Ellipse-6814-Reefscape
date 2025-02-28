@@ -38,7 +38,7 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public double getEncoderPosition() {
         
-        return m_encoder.getPosition();
+        return m_encoder.getPosition() * ElevatorConstants.kElevatorEncoderRot2Meters;
     }
 
     public double getEncoderVelocity() {
