@@ -5,6 +5,7 @@ import frc.robot.Subsystems.OuttakeSubsystem;
 public class IntakeCmd extends Command {
     private final OuttakeSubsystem m_OuttakeSubsystem;
     private final double speed;
+    private boolean broken;
 
     public IntakeCmd(OuttakeSubsystem subsystem, double speed) 
     {
@@ -24,11 +25,27 @@ public class IntakeCmd extends Command {
     {
         m_OuttakeSubsystem.setMotor(0);
     }
+
+    public boolean finish()
+    {
+        if (m_OuttakeSubsystem.isBroken() == true)
+        {
+            broken = true;
+        }
+        if (broken == true && m_OuttakeSubsystem.isBroken() == false)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
 
     @Override
     public boolean isFinished() 
     {
-        return m_OuttakeSubsystem.isBroken();
+        return finish();
     }
 }
