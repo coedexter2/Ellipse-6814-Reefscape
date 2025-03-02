@@ -51,8 +51,14 @@ public class ElevatorCommand extends Command {
 
         double feedforwardOutput = m_feedforward.calculate(profiledSetpoint.velocity);
         double pidOutput = m_pid.calculate(m_elevatorSubsystem.getEncoderPosition(), profiledSetpoint.position);
+        double outputs = feedforwardOutput + pidOutput;
         
-        m_elevatorSubsystem.setMotor(feedforwardOutput + pidOutput);
+        if(m_elevatorSubsystem.getLimitSwitch() && outputs < 0)
+        {
+            outputs = 0;
+        }
+
+        m_elevatorSubsystem.setMotor(outputs);
     }
 
     @Override
@@ -65,6 +71,6 @@ public class ElevatorCommand extends Command {
     @Override
     public boolean isFinished() 
     {
-        return false;
+        return m_elevatorSubsystem.getLimitSwitch() && position == 0;
     }
 }
