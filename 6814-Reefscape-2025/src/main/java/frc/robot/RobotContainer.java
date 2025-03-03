@@ -83,7 +83,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_Swerve.setDefaultCommand(new SwerveJoystickCmd(
-      m_Swerve,
+      m_Swerve, m_Elevator,
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
