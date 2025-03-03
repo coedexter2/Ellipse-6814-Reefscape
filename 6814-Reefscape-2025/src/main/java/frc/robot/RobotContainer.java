@@ -27,6 +27,7 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.ClimbCmd;
+import frc.robot.Commands.ClimbHomeCmd;
 import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -96,8 +97,8 @@ public class RobotContainer {
                                                                        ClimbConstants.kClimbSpeed)
                                                                        .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
 
-    new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
-    new JoystickButton(m_Joystick, 5).onTrue(new AutoAlign(m_Swerve, 1));
+    new JoystickButton(m_Joystick, 4).whileTrue(new AutoAlign(m_Swerve, 0));
+    new JoystickButton(m_Joystick, 5).whileTrue(new AutoAlign(m_Swerve, 1));
    
    
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -109,6 +110,11 @@ public class RobotContainer {
   }
 
   private void configureBindings() {}
+
+  public Command getClimbHomeCommand()
+  {
+    return new ClimbHomeCmd(m_Climb, Constants.ClimbConstants.kClimbSpeed);
+  }
 
   public Command getAutonomousCommand() {
     
