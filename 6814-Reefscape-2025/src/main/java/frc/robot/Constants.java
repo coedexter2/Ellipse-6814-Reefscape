@@ -11,10 +11,10 @@ public class Constants {
 
     public static final class OuttakeConstants {
 
-        public static final int kOuttakeMotorPort = 0;
-        public static final int kBeamBreakPort = 0;
-        public static final double kOuttakeSpeed = .1;
-        public static final double kIntakeSpeed = .1;
+        public static final int kOuttakeMotorPort = 9;
+        public static final int kBeamBreakPort = 9;
+        public static final double kOuttakeSpeed = -1.0;
+        public static final double kIntakeSpeed = -0.3;
         public static final double kOuttakeTimeout = 1;
 
         public static final SparkMaxConfig kOuttakeMotorConfig = new SparkMaxConfig();
@@ -34,6 +34,7 @@ public class Constants {
     public static final class ElevatorConstants {
 
         public static final int kElevatorMotorPort = 0;
+        public static final int kElevatorLimitSwitchPort = 0;
 
         public static final double kPulleyDiameterMeter = Units.inchesToMeters(1.504);
         public static final double kElevatorMotorGearRatio = 1 / 15;
