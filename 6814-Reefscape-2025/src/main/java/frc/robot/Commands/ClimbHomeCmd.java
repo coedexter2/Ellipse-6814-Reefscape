@@ -17,6 +17,7 @@ public class ClimbHomeCmd extends Command {
     public void execute() 
     {
         m_ClimbSubsystem.setSpeed(speed);
+        
     }
 
     @Override

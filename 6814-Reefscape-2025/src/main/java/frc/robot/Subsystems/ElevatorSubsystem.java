@@ -46,7 +46,7 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public double getEncoderVelocity() {
 
-        return m_encoder.getVelocity();
+        return m_encoder.getVelocity() * ElevatorConstants.kElevatorEncoderRot2Meters;
     }
 
     public boolean getLimitSwitch()
