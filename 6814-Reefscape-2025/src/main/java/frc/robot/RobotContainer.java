@@ -27,6 +27,7 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.ClimbCmd;
+import frc.robot.Commands.ClimbHomeCmd;
 import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -109,6 +110,11 @@ public class RobotContainer {
   }
 
   private void configureBindings() {}
+
+  public Command getClimbHomeCommand()
+  {
+    return new ClimbHomeCmd(m_Climb, Constants.ClimbConstants.kClimbSpeed);
+  }
 
   public Command getAutonomousCommand() {
     

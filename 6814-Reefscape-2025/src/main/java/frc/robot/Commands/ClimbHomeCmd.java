@@ -23,6 +23,7 @@ public class ClimbHomeCmd extends Command {
     public void end(boolean interrupted)
     {
         m_ClimbSubsystem.setSpeed(0);
+        m_ClimbSubsystem.resetEncoder();
     }
     
 
