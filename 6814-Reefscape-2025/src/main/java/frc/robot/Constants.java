@@ -22,22 +22,24 @@ public class Constants {
     }
     public static final class ClimbConstants {
 
-        public static final int kClimbMotorID = 0;
+        public static final int kClimbMotorID = 11;
         public static final int kLimitSwitchPort = 0;
         public static final SparkMaxConfig kClimbMotorConfig = new SparkMaxConfig();
-        public static final double kClimbEncoderRotToMeters = 1; // fix this
+
+        public static final double kClimbMotorGearRatio = (1.0 / 500.0);
+        public static final double kClimbEncoderRotToRadians = kClimbMotorGearRatio * 2 * Math.PI; // fix this
     
-        public static final double kClimbSpeed = .05;
-        public static final double kClimbSetpoint = 5;
+        public static final double kClimbSpeed = 0.1;
+        public static final double kClimbSetpoint = Math.toRadians(30);
     }
 
     public static final class ElevatorConstants {
 
-        public static final int kElevatorMotorPort = 0;
+        public static final int kElevatorMotorPort = 16;
         public static final int kElevatorLimitSwitchPort = 0;
 
         public static final double kPulleyDiameterMeter = Units.inchesToMeters(1.504);
-        public static final double kElevatorMotorGearRatio = 1 / 15;
+        public static final double kElevatorMotorGearRatio = 1.0 / 15.0;
         public static final double kBeltPullMeters = kElevatorMotorGearRatio * Math.PI * kPulleyDiameterMeter;
         public static final double kElevatorEncoderRot2Meters = 2 * kBeltPullMeters;
         public static final double kElevatorHeightLimit = 0.0;
@@ -46,11 +48,11 @@ public class Constants {
 
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;
-        public static final double kG = 0.0;
+        public static final double kG = 0.016;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kMaxVelocity = 0.0;
-        public static final double kMaxAcceleration = 0.0;
+        public static final double kMaxVelocity = 0.2;
+        public static final double kMaxAcceleration = 0.2;
 
         // PID CONSTANTS
         public static final double kP = 0.0;
@@ -158,9 +160,10 @@ public class Constants {
         public static final double kPhysicalMaxSpeedMetersPerSecond = 8;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2 / 10;
-        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 2.5 /5;
-        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2 / 2;
+        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 2.5;
+        ;
+        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 5;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
     }
 
