@@ -1,6 +1,9 @@
 package frc.robot.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ClimbSubsystem;
+
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,6 +20,11 @@ public class ClimbCmd extends Command {
         m_ClimbSubsystem = subsystem;
     }
 
+    @Override
+    public void initialize() 
+    {
+        m_ClimbSubsystem.setIdleMode(IdleMode.kCoast);
+    }
 
     @Override
     public void execute() {
@@ -27,7 +35,8 @@ public class ClimbCmd extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_ClimbSubsystem.setSpeed(0);
+        m_ClimbSubsystem.setSpeed(0.01);
+        m_ClimbSubsystem.setIdleMode(IdleMode.kBrake);
     }
     
 

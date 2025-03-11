@@ -19,6 +19,7 @@ public class ElevatorCommand extends Command {
                                                                               ElevatorConstants.kV,
                                                                               ElevatorConstants.kA);
     private TrapezoidProfile.State setpoint;
+    private boolean robotIsTryingToDestroyItself = false;
     
     // ===== PID stuff =====
     private final PIDController m_pid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
@@ -50,6 +51,7 @@ public class ElevatorCommand extends Command {
 
         this.setpoint = new TrapezoidProfile.State(m_elevatorSubsystem.getEncoderPosition(), 
                                                    0.0);
+        this.robotIsTryingToDestroyItself = false;
 
         SmartDashboard.putNumber("goal", position);
     }
@@ -71,12 +73,15 @@ public class ElevatorCommand extends Command {
         
         if(m_elevatorSubsystem.getLimitSwitch() && outputs < 0)
         {
-            //outputs = 0;
+            outputs = 0;
+            robotIsTryingToDestroyItself = true;
+            m_elevatorSubsystem.resetEncoder();
         }
         SmartDashboard.putNumber("elevatoroutput", outputs);
         SmartDashboard.putNumber("profiler setpoint", nextSetpoint.position);
         SmartDashboard.putNumber("elevator pos", m_elevatorSubsystem.getEncoderPosition());
         SmartDashboard.putNumber("timer", m_profilerTimer.get());
+        SmartDashboard.putBoolean("bot destroy itself", robotIsTryingToDestroyItself);
         
         m_elevatorSubsystem.setMotor(outputs);
     }
@@ -92,6 +97,6 @@ public class ElevatorCommand extends Command {
     public boolean isFinished() 
     {
         // return m_elevatorSubsystem.getLimitSwitch() && position <= 0;
-        return false;
+        return robotIsTryingToDestroyItself;
     }
 }
