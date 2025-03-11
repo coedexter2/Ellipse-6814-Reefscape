@@ -1,7 +1,6 @@
 package frc.robot.Subsystems;
 
-import com.studica.frc.AHRS;
-
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
@@ -67,10 +66,9 @@ public class SwerveSubsystem extends SubsystemBase {
         
         private final SwerveModule[] modules = new SwerveModule[]{frontLeft, frontRight, backLeft, backRight};
     
-        private final AHRS gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
+        private final Pigeon2 gyro = new Pigeon2(0);
     
         private Field2d field = new Field2d();
-
         
 
         private final SwerveDrivePoseEstimator m_poseEstimator = 
@@ -129,7 +127,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 }
             
                 public double getHeading() {
-                    return -Math.IEEEremainder(gyro.getAngle(), 360);
+                    return Math.IEEEremainder(gyro.getYaw().getValueAsDouble(), 360);
                 }
             
                 public Rotation2d getRotation2d() {
