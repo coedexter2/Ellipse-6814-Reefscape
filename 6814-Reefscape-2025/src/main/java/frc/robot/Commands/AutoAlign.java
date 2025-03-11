@@ -84,9 +84,9 @@ public class AutoAlign extends Command {
     {
         double minDistance = 2000000000;
         int point = -1;
-            for(int i = 0;i < Constants.FieldConstants.kMidpointCords.length;i++)
+            for(int i = 0;i < Constants.FieldConstants.kPointCords[allianceSide].length;i++)
             {
-                double distance = getDistance(Constants.FieldConstants.kMidpointCords[allianceSide][i][0], Constants.FieldConstants.kMidpointCords[allianceSide][i][1]);
+                double distance = getDistance(Constants.FieldConstants.kPointCords[allianceSide][direction][i][0], Constants.FieldConstants.kPointCords[allianceSide][direction][i][1]);
                 if(distance<minDistance)
                 {
                     minDistance = distance;
