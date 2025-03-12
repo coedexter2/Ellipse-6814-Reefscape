@@ -35,7 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public void resetEncoder() {
 
-        m_encoder.setPosition(0);
+        m_encoder.setPosition(0.05);
 
     }
 
@@ -51,6 +51,6 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public boolean getLimitSwitch()
     {
-        return m_limitSwitch.get();
+        return !m_limitSwitch.get();
     }
 }

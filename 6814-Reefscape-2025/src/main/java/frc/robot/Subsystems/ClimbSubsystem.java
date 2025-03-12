@@ -5,6 +5,8 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +20,7 @@ public class ClimbSubsystem extends SubsystemBase {
     private final DigitalInput m_Limit;
    
     public ClimbSubsystem() {
-
+        ClimbConstants.kClimbMotorConfig.idleMode(IdleMode.kCoast);
         m_climbMotor.configure(ClimbConstants.kClimbMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_Limit = new DigitalInput(ClimbConstants.kLimitSwitchPort);
     }
@@ -45,6 +47,12 @@ public class ClimbSubsystem extends SubsystemBase {
 
         return m_climbEncoder.getPosition() * ClimbConstants.kClimbEncoderRotToRadians;
 
+    }
+    
+    public void setIdleMode(IdleMode idleMode)
+    {
+        ClimbConstants.kClimbMotorConfig.idleMode(idleMode);
+        m_climbMotor.configure(ClimbConstants.kClimbMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
 

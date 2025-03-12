@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Commands.ClimbHomeCmd;
@@ -39,6 +40,8 @@ public class Robot extends TimedRobot {
         GamePhase.currentPhase = Phase.AUTONOMOUS;
       }
     }
+
+    SmartDashboard.putBoolean("elevator swithc", m_robotContainer.m_Elevator.getLimitSwitch());
   }
 
   @Override
@@ -67,11 +70,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    m_ClimbHomeCommand = m_robotContainer.getClimbHomeCommand();
-    m_ClimbHomeCommand.schedule();
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    // m_ClimbHomeCommand = m_robotContainer.getClimbHomeCommand();
+    // m_ClimbHomeCommand.schedule();
+    // if (m_autonomousCommand != null) {
+    //   m_autonomousCommand.cancel();
+    // }
   }
 
   @Override
