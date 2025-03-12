@@ -48,12 +48,13 @@ public class ClimbSubsystem extends SubsystemBase {
         return m_climbEncoder.getPosition() * ClimbConstants.kClimbEncoderRotToRadians;
 
     }
-
+    
     public void setIdleMode(IdleMode idleMode)
     {
         ClimbConstants.kClimbMotorConfig.idleMode(idleMode);
         m_climbMotor.configure(ClimbConstants.kClimbMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
+
 
     public boolean isHome()
     {

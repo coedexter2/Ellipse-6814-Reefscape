@@ -22,7 +22,6 @@ public class Constants {
     
     }
     public static final class ClimbConstants {
-
         public static final int kClimbMotorID = 20;
         public static final int kLimitSwitchPort = 1;
         public static final SparkMaxConfig kClimbMotorConfig = new SparkMaxConfig();
@@ -52,6 +51,7 @@ public class Constants {
         public static final double kG = 0.016;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
+
         public static final double kMaxVelocity = 0.8;
         public static final double kMaxAcceleration = 0.4;
 
@@ -166,7 +166,7 @@ public class Constants {
 
         public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2 / 2 / 5 * 1.5;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 10 / 3;
-        ;
+        
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 5;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
     }
