@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
@@ -20,6 +21,12 @@ public class ClimbSubsystem extends SubsystemBase {
 
         m_climbMotor.configure(ClimbConstants.kClimbMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_Limit = new DigitalInput(ClimbConstants.kLimitSwitchPort);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Climb Position", getEncoderPosition());
+        SmartDashboard.putBoolean("Climb Limit Switch", isHome());
     }
 
     public void setSpeed(double speed) {
@@ -36,12 +43,13 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public double getEncoderPosition() {
 
-        return m_climbEncoder.getPosition();
+        return m_climbEncoder.getPosition() * ClimbConstants.kClimbEncoderRotToRadians;
 
     }
 
+
     public boolean isHome()
     {
-        return m_Limit.get();
+        return !m_Limit.get();
     }
 }
