@@ -149,8 +149,8 @@ public class SwerveSubsystem extends SubsystemBase {
         pose);  
     }
 
-    public void visionUpdate(Pose2d pose, double latency) {
-        m_poseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp() - latency);
+    public void visionUpdate(Pose2d pose) {
+        m_poseEstimator.addVisionMeasurement(pose, Timer.getFPGATimestamp());
 
     }
 
