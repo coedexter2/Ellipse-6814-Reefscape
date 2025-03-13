@@ -33,11 +33,13 @@ public class IntakeCmd extends Command {
         
         if (m_OuttakeSubsystem.isBroken()) {
             
+            SmartDashboard.putBoolean("isbrokenbeam", false);
             broken = true;
         }
 
         if (broken && !m_OuttakeSubsystem.isBroken()){
 
+            SmartDashboard.putBoolean("isbrokenbeam", false);
             return true;
         }
         return false;
