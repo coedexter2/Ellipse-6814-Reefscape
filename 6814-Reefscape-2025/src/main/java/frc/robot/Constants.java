@@ -45,6 +45,8 @@ public class Constants {
         public static final double kElevatorHeightLimit = 0.0;
 
         public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
+        public static final double kMaxMotorVoltage = 11;
+        public static final boolean kClampBatteryVoltageToMaxVoltage = true;
         
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;

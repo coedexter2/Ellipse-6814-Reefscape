@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Constants.ElevatorConstants;
 
 import com.revrobotics.RelativeEncoder;
@@ -27,10 +28,21 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     }
 
+    /**
+     * Automatically limits voltage to ElevatorConstants.kMaxMotorVoltage
+     * @param speed Speed -1 to 1
+     */
     public void setMotor(double speed) {
-
-        m_elevator.set(speed);
-
+        if(ElevatorConstants.kClampBatteryVoltageToMaxVoltage)
+        {
+            m_elevator.setVoltage(Math.max(Math.min(speed, 1.0), -1.0) * ElevatorConstants.kMaxMotorVoltage);
+        }
+        else
+        {
+            m_elevator.setVoltage(speed * ElevatorConstants.kMaxMotorVoltage);
+        }
+        
+        //m_elevator.set(speed);
     }
 
     public void resetEncoder() {
