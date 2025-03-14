@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,6 +35,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -50,13 +52,14 @@ import frc.robot.Subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   private final SwerveSubsystem m_Swerve = new SwerveSubsystem();
-  private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
+  public final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final Joystick m_Joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
-  private final SendableChooser<Command> autoChooser;
 
-  private final ClimbSubsystem m_Climb = new ClimbSubsystem();
+  // private final SendableChooser<Command> autoChooser;
+
+  //private final ClimbSubsystem m_Climb = new ClimbSubsystem();
 
   /* 
   private final ParallelCommandGroup Swerve = new ParallelCommandGroup(new SwerveJoystickCmd(
@@ -68,17 +71,17 @@ public class RobotContainer {
   */
 
    
-  public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
-  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+  // public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
+  // .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
   
-  public Command ElevateOutTwo = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kSecondLevel)
-  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+  // public Command ElevateOutTwo = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kSecondLevel)
+  // .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
 
-  public Command ElevateOutThird = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kThirdLevel)
-  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+  // public Command ElevateOutThird = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kThirdLevel)
+  // .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
 
-  public Command ElevateOutFourth = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFourthLevel)
-  .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
+  // public Command ElevateOutFourth = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFourthLevel)
+  // .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
   
 
   public RobotContainer() {
@@ -87,22 +90,38 @@ public class RobotContainer {
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
       () -> -m_Joystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
-      () -> !m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)));
+      () -> m_Joystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)));
 
-    new JoystickButton(m_Joystick, 1).onTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed));
-    new JoystickButton(m_Joystick, 2).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1.5));
+    new JoystickButton(m_Joystick, 5).onTrue(new IntakeCmd(m_Out,Constants.OuttakeConstants.kIntakeSpeed));
+    new JoystickButton(m_Joystick, 6).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(0.5));
+    // SmartDashboard.putNumber("ks", 0);
+    // SmartDashboard.putNumber("kg", 0);
+    // SmartDashboard.putNumber("kv", 0);
+    // SmartDashboard.putNumber("ka", 0);
+    // SmartDashboard.putNumber("kp", 0);
+    // SmartDashboard.putNumber("ki", 0);
+    // SmartDashboard.putNumber("kd", 0);
+
+    // SmartDashboard.putNumber("l2", 0);
+
+    new JoystickButton(m_Joystick, 1).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    new JoystickButton(m_Joystick, 2).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
+    new JoystickButton(m_Joystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    new JoystickButton(m_Joystick, 4).onTrue(new ElevatorCommand(m_Elevator, 0.0));
     
-    new JoystickButton(m_Joystick, 3).onTrue(new ClimbCmd(m_Climb,
-                                                                       ClimbConstants.kClimbSetpoint,
-                                                                       ClimbConstants.kClimbSpeed)
-                                                                       .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
+    // new JoystickButton(m_Joystick, 4).onTrue(new ClimbHomeCmd(m_Climb, -0.15));
 
-    new JoystickButton(m_Joystick, 4).whileTrue(new AutoAlign(m_Swerve, 0));
-    new JoystickButton(m_Joystick, 5).whileTrue(new AutoAlign(m_Swerve, 1));
+    // new JoystickButton(m_Joystick, 3).onTrue(new ClimbCmd(m_Climb,
+    //                                                                    ClimbConstants.kClimbSetpoint,
+    //                                                                    ClimbConstants.kClimbSpeed));
+    //                                                                   //  .onlyIf(() -> ((GamePhase.currentPhase == Phase.ENDGAME) || m_Joystick.getRawButton(6814))));
+
+    // new JoystickButton(m_Joystick, 4).onTrue(new AutoAlign(m_Swerve, 0));
+    // new JoystickButton(m_Joystick, 5).onTrue(new AutoAlign(m_Swerve, 1));
    
    
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Mode", autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Mode", autoChooser);
 
     
     
@@ -113,12 +132,13 @@ public class RobotContainer {
 
   public Command getClimbHomeCommand()
   {
-    return new ClimbHomeCmd(m_Climb, Constants.ClimbConstants.kClimbSpeed);
+    // return new ClimbHomeCmd(m_Climb, Constants.ClimbConstants.kClimbSpeed);
+    return new PrintCommand("AAAAAAAAAAAA");
   }
 
   public Command getAutonomousCommand() {
     
-    return autoChooser.getSelected();
+    return Commands.print("null");
 
     /* 
     // 1. Create trajectory settings

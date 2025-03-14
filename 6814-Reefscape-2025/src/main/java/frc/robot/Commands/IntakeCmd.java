@@ -1,4 +1,5 @@
 package frc.robot.Commands;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.OuttakeSubsystem;
 
@@ -15,9 +16,31 @@ public class IntakeCmd extends Command {
     }
 
     @Override
+    public void initialize() {
+        broken = false;
+    }
+
+    @Override
     public void execute() 
     {
         m_OuttakeSubsystem.setMotor(speed);
+
+        SmartDashboard.putBoolean("beambreak", m_OuttakeSubsystem.isBroken());
+        SmartDashboard.putBoolean("broken", broken);
+    }
+
+    public boolean finish() {
+        
+        if (m_OuttakeSubsystem.isBroken()) {
+            
+            broken = true;
+        }
+
+        if (broken && !m_OuttakeSubsystem.isBroken()){
+
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -26,22 +49,6 @@ public class IntakeCmd extends Command {
         m_OuttakeSubsystem.setMotor(0);
     }
 
-    public boolean finish()
-    {
-        if (m_OuttakeSubsystem.isBroken() == true)
-        {
-            broken = true;
-        }
-        if (broken == true && m_OuttakeSubsystem.isBroken() == false)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
 
     @Override
     public boolean isFinished() 
