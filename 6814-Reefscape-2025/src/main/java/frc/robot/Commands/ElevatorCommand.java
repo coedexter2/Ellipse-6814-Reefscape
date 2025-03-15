@@ -5,6 +5,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Subsystems.ElevatorSubsystem;
@@ -12,6 +13,7 @@ import frc.robot.Subsystems.ElevatorSubsystem;
 public class ElevatorCommand extends Command {
     // ===== Feedforward stuff =====
     private final Timer m_profilerTimer = new Timer();
+    
     private TrapezoidProfile m_motionProfiler = new TrapezoidProfile(new TrapezoidProfile.Constraints(ElevatorConstants.kMaxVelocity, 
                                                                                                       ElevatorConstants.kMaxAcceleration));
     private ElevatorFeedforward m_feedforward = new ElevatorFeedforward(ElevatorConstants.kS, 
@@ -33,7 +35,10 @@ public class ElevatorCommand extends Command {
         this.position = position;
         this.setpoint = new TrapezoidProfile.State(m_elevatorSubsystem.getEncoderPosition(), 
                                                    0.0);
+        this.setpoint = new TrapezoidProfile.State(m_elevatorSubsystem.getEncoderPosition(), 
+                                                   0.0);
 
+        addRequirements(subsystem);
         addRequirements(subsystem);
     }
 
@@ -65,11 +70,13 @@ public class ElevatorCommand extends Command {
         TrapezoidProfile.State nextSetpoint = m_motionProfiler.calculate(0.02, 
                                                                          setpoint, 
                                                                          new TrapezoidProfile.State(position, 0.0));
-
+    
         double feedforwardOutput = m_feedforward.calculate(nextSetpoint.velocity);  
         double pidOutput = m_pid.calculate(m_elevatorSubsystem.getEncoderPosition(), nextSetpoint.position);
+
         double outputs = feedforwardOutput + pidOutput;
         this.setpoint = nextSetpoint;
+
         
         if(m_elevatorSubsystem.getLimitSwitch() && outputs < 0)
         {

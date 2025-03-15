@@ -29,6 +29,7 @@ public class Constants {
         public static final double kClimbMotorGearRatio = (1.0 / 500.0);
         public static final double kClimbEncoderRotToRadians = kClimbMotorGearRatio * 2 * Math.PI; // fix this
     
+        public static final double kClimbHomeSpeed = 0.2;
         public static final double kClimbSpeed = 0.5;
         public static final double kClimbSetpoint = Math.toRadians(125);
     }
@@ -45,17 +46,18 @@ public class Constants {
         public static final double kElevatorHeightLimit = 0.0;
 
         public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
-        public static final double kMaxMotorVoltage = 11;
+        public static final double kMaxMotorVoltage = 11; // 
         public static final boolean kClampBatteryVoltageToMaxVoltage = true;
+
         
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;
-        public static final double kG = 0.016;
-        public static final double kV = 0.0;
+        public static final double kG = 0.021000;
+        public static final double kV = 0.656140;
         public static final double kA = 0.0;
 
-        public static final double kMaxVelocity = 0.8;
-        public static final double kMaxAcceleration = 0.4;
+        public static final double kMaxVelocity = 0.9;
+        public static final double kMaxAcceleration = 0.6;
 
         // PID CONSTANTS
         public static final double kP = 0.0;
@@ -63,11 +65,10 @@ public class Constants {
         public static final double kD = 0.0;
 
         // LEVELS
-
         public static final double kFirstLevel = 0.0;
         public static final double kSecondLevel = Units.inchesToMeters(12.49 + 4); //12.49
         public static final double kThirdLevel = Units.inchesToMeters(28.33 + 4); //28.33
-        public static final double kFourthLevel = Units.inchesToMeters(52.36);
+        public static final double kFourthLevel = Units.inchesToMeters(53.36); //54.36
     }
 
     public static final class ModuleConstants {
@@ -166,15 +167,16 @@ public class Constants {
         public static final double kPhysicalMaxSpeedMetersPerSecond = (ModuleConstants.kMaxMotorRPM / (1 / ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI)/ 60;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = (kPhysicalMaxSpeedMetersPerSecond / Units.inchesToMeters(35)) * 2 * Math.PI;
 
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2 / 2 / 5 * 1.5;
-        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 10 / 3;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond * 0.5;
+        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond * 0.2;
         
-        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 5;
+        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
     }
 
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0;
+        public static final int kElevatorJoystickPort = 1;
 
         public static final int kDriverYAxis = 0;
         public static final int kDriverXAxis = 1;
@@ -188,14 +190,10 @@ public static final class FieldConstants
 {
     // point cords: 0: blue, 1:red and then within that 0:right 1:left, and then within that 0: x 1: y 2: heading
     // point cords: 0: blue, 1:red, and then within that 0: x 1: y 2: heading
-    public static final double[][][][] kPointCords = {{{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}},
+    public static final double[][][][] kPointCords = {{{{3.896,5.208,300},{4.186,5.359,300}},{{5.262,5.177,240},{3.960,5.006,240}},{{5.869,3.960,180},{5.866,3.675,180}},
+                                                    {{5.111,2.797,120},{4.823,2.643,120}},{{3.776,2.858,60},{3.485,3.029,60}},{{3.169,4.118,0},{5.208,4.408,0}}},
 
-                                                    {{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}}};
+                                                    {{{12.007,4.986,60},{12.320,5.153,60}},{{13.410,5.382,120},{13.670,5.231,120}},{{14.421,4.433,180},{14.421,4.136,180}},
+                                                    {{13.722,2.822,240},{13.441,2.687,240}},{{12.353,2.883,300},{12.098,3.029,300}},{{11.710,4.121,0},{11.731,4.371,0}}}};
 
-    public static final double[][][] kMidpointCords = {{{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}}}; 
-}
-
-}
+}}
