@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Subsystems.SwerveSubsystem;
@@ -20,7 +21,6 @@ public class AutoAlign extends Command {
     private final SwerveSubsystem m_SwerveSubsystem;
     int allianceSide;
     int direction;
-
 
     public AutoAlign(SwerveSubsystem subsystem, int direction) 
     {
@@ -42,6 +42,8 @@ public class AutoAlign extends Command {
     @Override
     public void execute() 
     {
+        SmartDashboard.putBoolean("isaligned", false);
+        
         double x,y,degrees;
 
         x = Constants.FieldConstants.kPointCords[allianceSide][direction][getSetPoint()][0];
@@ -71,6 +73,7 @@ public class AutoAlign extends Command {
     public void end(boolean interrupted)
     {
         m_SwerveSubsystem.stopModules();
+        SmartDashboard.putBoolean("isaligned", true);
     }
     
 
@@ -84,9 +87,9 @@ public class AutoAlign extends Command {
     {
         double minDistance = 2000000000;
         int point = -1;
-            for(int i = 0;i < Constants.FieldConstants.kMidpointCords.length;i++)
+            for(int i = 0;i < Constants.FieldConstants.kPointCords[allianceSide].length;i++)
             {
-                double distance = getDistance(Constants.FieldConstants.kMidpointCords[allianceSide][i][0], Constants.FieldConstants.kMidpointCords[allianceSide][i][1]);
+                double distance = getDistance(Constants.FieldConstants.kPointCords[allianceSide][direction][i][0], Constants.FieldConstants.kPointCords[allianceSide][direction][i][1]);
                 if(distance<minDistance)
                 {
                     minDistance = distance;

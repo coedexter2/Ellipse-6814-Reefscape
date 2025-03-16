@@ -45,6 +45,8 @@ public class Constants {
         public static final double kElevatorHeightLimit = 0.0;
 
         public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
+        public static final double kMaxMotorVoltage = 11;
+        public static final boolean kClampBatteryVoltageToMaxVoltage = true;
         
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;
@@ -186,14 +188,10 @@ public static final class FieldConstants
 {
     // point cords: 0: blue, 1:red and then within that 0:right 1:left, and then within that 0: x 1: y 2: heading
     // point cords: 0: blue, 1:red, and then within that 0: x 1: y 2: heading
-    public static final double[][][][] kPointCords = {{{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}},
+    public static final double[][][][] kPointCords = {{{{3.896,5.208,300},{4.186,5.359,300}},{{5.262,5.177,240},{3.960,5.006,240}},{{5.869,3.960,180},{5.866,3.675,180}},
+                                                    {{5.111,2.797,120},{4.823,2.643,120}},{{3.776,2.858,60},{3.485,3.029,60}},{{3.169,4.118,0},{5.208,4.408,0}}},
 
-                                                    {{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}},{{1,1,90},{1,1,90}}}};
-
-    public static final double[][][] kMidpointCords = {{{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}},
-                                                    {{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90},{1,1,90}}}; 
+                                                    {{{12.007,4.986,60},{12.320,5.153,60}},{{13.410,5.382,120},{13.670,5.231,120}},{{14.421,4.433,180},{14.421,4.136,180}},
+                                                    {{13.722,2.822,240},{13.441,2.687,240}},{{12.353,2.883,300},{12.098,3.029,300}},{{11.710,4.121,0},{11.731,4.371,0}}}};
 }
-
 }
