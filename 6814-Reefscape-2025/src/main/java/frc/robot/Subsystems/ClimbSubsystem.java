@@ -8,12 +8,13 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
-
+@Logged
 public class ClimbSubsystem extends SubsystemBase {
     private final SparkMax m_climbMotor = new SparkMax(ClimbConstants.kClimbMotorID, MotorType.kBrushless);
     private final RelativeEncoder m_climbEncoder = m_climbMotor.getEncoder();

@@ -7,6 +7,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,8 +26,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 
 
-
-
+@Logged
 public class SwerveSubsystem extends SubsystemBase {
     private final static SwerveModule frontLeft = new SwerveModule(
                 DriveConstants.kFrontLeftDriveMotorPort,
