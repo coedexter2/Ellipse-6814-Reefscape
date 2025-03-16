@@ -3,7 +3,7 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 
-
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -14,7 +14,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
 import com.ctre.phoenix6.hardware.TalonFX;;
-
+@Logged
 public class SwerveModule {
     private final TalonFX driveMotor;
     private final TalonFX turningMotor;
