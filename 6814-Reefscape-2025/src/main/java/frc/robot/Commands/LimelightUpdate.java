@@ -21,7 +21,7 @@ public class LimelightUpdate extends Command{
         LimelightHelpers.SetRobotOrientation("", m_SwerveSubsystem.getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
         
-        if (mt2 != null && mt2.tagCount > 0) {
+        if (mt2 != null && mt2.tagCount > 999) {
             m_SwerveSubsystem.visionUpdate(mt2.pose);
             SmartDashboard.putString("Limelight Pose", mt2.pose.toString());
         }

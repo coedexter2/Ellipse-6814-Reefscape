@@ -79,7 +79,8 @@ public class RobotContainer {
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
-    () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx)), new LimelightUpdate(m_Swerve));
+    () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
+    () -> m_DriveJoystick.getRawAxis(3)), new LimelightUpdate(m_Swerve));
   
 
    
@@ -98,7 +99,7 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    NamedCommands.registerCommand("Outtake", new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(0.5));
+    NamedCommands.registerCommand("Outtake", new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(2));
     NamedCommands.registerCommand("Intake", new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
 
     NamedCommands.registerCommand("Elevator 1", new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
@@ -112,18 +113,19 @@ public class RobotContainer {
    m_Swerve.setDefaultCommand(Swerve);
 
 
-    new JoystickButton(m_ElevatorJoystick, 1).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
-    new JoystickButton(m_ElevatorJoystick, 3).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
+    // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
+    new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
     new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
     new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
-    new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
-    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new ClimbCmd(m_Climb, ClimbConstants.kClimbSetpoint, ClimbConstants.kClimbSpeed).onlyIf(()->m_ElevatorJoystick.getRawAxis(3) > 0.5));
 
-    new JoystickButton(m_DriveJoystick, 4).whileTrue(new AutoAlign(m_Swerve, 0));
-    new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, 1));
+    // new JoystickButton(m_DriveJoystick, 4).whileTrue(new AutoAlign(m_Swerve, 0));
+    // new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, 1));
 
     // SmartDashboard.putNumber("ks", 0);
     // SmartDashboard.putNumber("kg", 0);
@@ -140,7 +142,6 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
 
-    SmartDashboard.putNumber("matchtime", DriverStation.getMatchTime());
     
     configureBindings();
   }

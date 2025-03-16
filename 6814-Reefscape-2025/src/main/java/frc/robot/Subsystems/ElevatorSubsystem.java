@@ -49,6 +49,7 @@ public class ElevatorSubsystem extends SubsystemBase{
     @Override
     public void periodic() {
         SmartDashboard.putNumber("elevator pos", getEncoderPosition());
+        getLimitSwitch();
 
     }
 

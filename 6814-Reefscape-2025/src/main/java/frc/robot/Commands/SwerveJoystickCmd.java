@@ -16,19 +16,21 @@ import frc.robot.Subsystems.SwerveSubsystem;
 public class SwerveJoystickCmd extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
-    private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
+    private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction, slowSupplier;
     private final Supplier<Boolean> fieldOrientedFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final ElevatorSubsystem m_ElevatorSubsystem;
+    double speedModifer;
     public SwerveJoystickCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
-            Supplier<Boolean> fieldOrientedFunction) {
+            Supplier<Boolean> fieldOrientedFunction, Supplier<Double> slowSupplier) {
         this.swerveSubsystem = swerveSubsystem;
         this.m_ElevatorSubsystem = elevatorSubsystem;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
         this.turningSpdFunction = turningSpdFunction;
         this.fieldOrientedFunction = fieldOrientedFunction;
+        this.slowSupplier = slowSupplier;
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
@@ -37,7 +39,7 @@ public class SwerveJoystickCmd extends Command {
 
     @Override
     public void initialize() {
-        
+        speedModifer = 1;
     }
 
     @Override
@@ -49,17 +51,27 @@ public class SwerveJoystickCmd extends Command {
         double ySpeed = ySpdFunction.get();
         double turningSpeed = turningSpdFunction.get();
         
+        if (slowSupplier.get() > 0.5) {
+            speedModifer = 0.5;
+
+        }
+        else {
+            speedModifer = 1;
+        }
+
+
         if (m_ElevatorSubsystem.getEncoderPosition() <= ElevatorConstants.kThirdLevel) {
             // 2. Apply deadband
             xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
             ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
+            turningSpeed = speedModifer * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
         else {
-            xSpeed = 0.5 * Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
-            ySpeed = 0.5 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = 0.5 * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
+            xSpeed = speedModifer * 0.5 * Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
+            ySpeed = speedModifer * 0.5 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
+            turningSpeed = speedModifer * 0.5 * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
+        
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
         ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
@@ -75,10 +87,10 @@ public class SwerveJoystickCmd extends Command {
         if (fieldOrientedFunction.get()) {
             // Relative to field
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                xSpeed * invert, ySpeed * invert, turningSpeed, swerveSubsystem.getRotation2d());
+                xSpeed * invert * speedModifer, ySpeed * invert * speedModifer, turningSpeed, swerveSubsystem.getRotation2d());
             } else {
             // Relative to robot
-            chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
+            chassisSpeeds = new ChassisSpeeds(xSpeed * speedModifer, ySpeed * speedModifer, turningSpeed);
         }
         
         // 5. Convert chassis speeds to individual module states
