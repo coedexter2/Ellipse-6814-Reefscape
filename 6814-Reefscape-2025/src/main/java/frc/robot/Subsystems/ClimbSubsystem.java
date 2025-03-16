@@ -34,7 +34,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public void setSpeed(double speed) {
 
-        m_climbMotor.set(speed);
+        m_climbMotor.set(-speed);
     }
 
 

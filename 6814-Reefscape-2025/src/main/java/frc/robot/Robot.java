@@ -79,9 +79,9 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // m_ClimbHomeCommand = m_robotContainer.getClimbHomeCommand();
     // m_ClimbHomeCommand.schedule();
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.cancel();
-    // }
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
   }
 
   @Override
