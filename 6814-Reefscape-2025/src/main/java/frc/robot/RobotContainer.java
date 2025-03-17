@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.Newton;
 
 import java.util.List;
 
+import javax.swing.GroupLayout.Alignment;
+
 import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -122,8 +124,8 @@ public class RobotContainer {
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new ClimbCmd(m_Climb, ClimbConstants.kClimbSetpoint, ClimbConstants.kClimbSpeed).onlyIf(()->m_ElevatorJoystick.getRawAxis(3) > 0.5));
 
-    new JoystickButton(m_DriveJoystick, 4).whileTrue(new AutoAlign(m_Swerve, 0));
-    new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, 1));
+    new JoystickButton(m_DriveJoystick, 4).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
+    new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
 
     // SmartDashboard.putNumber("ks", 0);
     // SmartDashboard.putNumber("kg", 0);
