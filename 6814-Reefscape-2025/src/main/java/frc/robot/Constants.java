@@ -196,4 +196,27 @@ public static final class FieldConstants
                                                     {{{12.007,4.986,60},{12.320,5.153,60}},{{13.410,5.382,120},{13.670,5.231,120}},{{14.421,4.433,180},{14.421,4.136,180}},
                                                     {{13.722,2.822,240},{13.441,2.687,240}},{{12.353,2.883,300},{12.098,3.029,300}},{{11.710,4.121,0},{11.731,4.371,0}}}};
 
-}}
+}
+
+public static final class AutoAlignConstants
+{
+    public static final double kLeftReefOffset = 0.0;
+    public static final double kRightReefOffset = 0.0;
+    
+    public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
+    public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
+
+    // Size of bot in Y Axis (including bumpers) see diagram
+    public static final double kBotYSize = Units.inchesToMeters(38); //TODO: Get the correct botysize
+
+    /*
+     *   The ^ is the shooter
+     * ----------- 
+     * |    ^    |
+     * |    ^    |  < This side is kBotYSize
+     * |         |
+     * -----------
+     */
+}
+
+}
