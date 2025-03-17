@@ -42,24 +42,24 @@ public class AutoAlign extends Command {
         
         Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
         double tagRotation = closestAprilTagPose.getRotation().getRadians();
-        double x, y, degrees;
+        double x, y;
 
         if(alignment == ReefAlignment.LEFT)
         {
             x = closestAprilTagPose.getX()
-                + Math.cos(tagRotation) * AutoAlignConstants.kBotYSize // Push bot out of reef
+                + Math.cos(tagRotation) * (AutoAlignConstants.kBotYSize / 2) // Push bot out of reef
                 + Math.cos(tagRotation + Math.PI / 2) * AutoAlignConstants.kLeftReefOffset; // Offset to the left
             y = closestAprilTagPose.getY() 
-                + Math.sin(tagRotation) * AutoAlignConstants.kBotYSize
+                + Math.sin(tagRotation) * (AutoAlignConstants.kBotYSize / 2)
                 + Math.sin(tagRotation + Math.PI / 2) * AutoAlignConstants.kLeftReefOffset;
         }
         else
         {
             x = closestAprilTagPose.getX()
-                + Math.cos(tagRotation) * AutoAlignConstants.kBotYSize // Push bot out of reef
+                + Math.cos(tagRotation) * (AutoAlignConstants.kBotYSize / 2) // Push bot out of reef
                 + Math.cos(tagRotation + Math.PI / 2) * AutoAlignConstants.kRightReefOffset; // Offset to the right
             y = closestAprilTagPose.getY() 
-                + Math.sin(tagRotation) * AutoAlignConstants.kBotYSize
+                + Math.sin(tagRotation) * (AutoAlignConstants.kBotYSize / 2)
                 + Math.sin(tagRotation + Math.PI / 2) * AutoAlignConstants.kRightReefOffset;
         }
 
