@@ -9,7 +9,7 @@ public class LimelightUpdate extends Command{
 
     private final SwerveSubsystem m_SwerveSubsystem;
 
-    public LimelightHelpers.PoseEstimate mt2;
+    public LimelightHelpers.PoseEstimate frontMt2;
     
     public LimelightUpdate(SwerveSubsystem subsystem) {
 
@@ -19,11 +19,11 @@ public class LimelightUpdate extends Command{
 
     public void poseEstimatorLimelightUpdate () {
         LimelightHelpers.SetRobotOrientation("", m_SwerveSubsystem.getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
+        LimelightHelpers.PoseEstimate frontMt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
         
-        if (mt2 != null && mt2.tagCount > 999) {
-            m_SwerveSubsystem.visionUpdate(mt2.pose);
-            SmartDashboard.putString("Limelight Pose", mt2.pose.toString());
+        if (frontMt2 != null && frontMt2.tagCount > 99) {
+            m_SwerveSubsystem.visionUpdate(frontMt2.pose);
+            SmartDashboard.putString("Limelight Pose", frontMt2.pose.toString());
         }
         
     }

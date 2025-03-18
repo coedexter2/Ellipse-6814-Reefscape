@@ -18,7 +18,7 @@ public class SwerveJoystickCmd extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction, slowSupplier;
     private final Supplier<Boolean> fieldOrientedFunction;
-    private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
+    private final SlewRateLimiter xLimiter, yLimiter, turningLimiter, slowX, slowY;
     private final ElevatorSubsystem m_ElevatorSubsystem;
     double speedModifer;
     public SwerveJoystickCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
@@ -33,6 +33,8 @@ public class SwerveJoystickCmd extends Command {
         this.slowSupplier = slowSupplier;
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+        this.slowX = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond * 1.5);
+        this.slowY = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond * 1.5);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
         addRequirements(swerveSubsystem);
     }
@@ -73,15 +75,27 @@ public class SwerveJoystickCmd extends Command {
         }
         
         // 3. Make the driving smoother
-        xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-        ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-        turningSpeed = turningLimiter.calculate(turningSpeed)
+        if (slowSupplier.get() < 0.5) {
+            xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+            ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+            turningSpeed = turningLimiter.calculate(turningSpeed)
                 * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-                var alliance = DriverStation.getAlliance();
-                var invert = 1;
-                    if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+
+        }
+        else {
+            xSpeed = slowX.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+            ySpeed = slowY.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
+            turningSpeed = turningLimiter.calculate(turningSpeed)
+                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
+
+        }
+
+
+        var alliance = DriverStation.getAlliance();
+        var invert = 1;
+            if (alliance.isPresent() && alliance.get() == Alliance.Red) {
                 invert = -1;
-                }
+            }
         // 4. Construct desired chassis speeds
         ChassisSpeeds chassisSpeeds;
         if (fieldOrientedFunction.get()) {

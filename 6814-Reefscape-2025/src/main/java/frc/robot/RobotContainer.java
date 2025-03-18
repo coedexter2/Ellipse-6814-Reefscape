@@ -71,7 +71,7 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser;
 
-  private final ClimbSubsystem m_Climb = new ClimbSubsystem();
+  // private final ClimbSubsystem m_Climb = new ClimbSubsystem();
 
   
   private final ParallelCommandGroup Swerve = new ParallelCommandGroup(new SwerveJoystickCmd(
@@ -137,7 +137,10 @@ public class RobotContainer {
 
     // SmartDashboard.putNumber("l2", 0);
     HttpCamera httpCamera = new HttpCamera("Limelight Camera", "http://limelight.local:5800");
+    HttpCamera intakeCamera = new HttpCamera("Intake Camera", "http://limelight-back.local:5800");
+
     CameraServer.addCamera(httpCamera);
+    CameraServer.addCamera(intakeCamera);
    
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
