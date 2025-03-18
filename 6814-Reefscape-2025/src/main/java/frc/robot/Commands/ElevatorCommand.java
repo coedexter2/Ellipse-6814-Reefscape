@@ -46,8 +46,8 @@ public class ElevatorCommand extends Command {
     public void initialize() 
     {
         m_feedforward = new ElevatorFeedforward(SmartDashboard.getNumber("ks", 0.0),
-                                                SmartDashboard.getNumber("kg", 0.0),
-                                                SmartDashboard.getNumber("kv", 0.0),
+                                                ElevatorConstants.kG,
+                                                ElevatorConstants.kV,
                                                 SmartDashboard.getNumber("ka", 0.0));
 
         m_pid.setPID(SmartDashboard.getNumber("kp", 0.0),

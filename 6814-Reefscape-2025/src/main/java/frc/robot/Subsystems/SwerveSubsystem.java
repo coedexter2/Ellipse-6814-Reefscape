@@ -138,6 +138,10 @@ public class SwerveSubsystem extends SubsystemBase {
         return m_poseEstimator.getEstimatedPosition();
     }
 
+    public void updatePoseOnField(String name, Pose2d pose) {
+        field.getObject(name).setPose(pose.getX(), pose.getY(), pose.getRotation());
+      }
+
 
     public void resetOdometry(Pose2d pose) {
         m_poseEstimator.resetPosition(getRotation2d(), new SwerveModulePosition[]{
@@ -200,6 +204,8 @@ public class SwerveSubsystem extends SubsystemBase {
         frontRight.writeValues();
         backLeft.writeValues();
         backRight.writeValues();
+
+        updatePoseOnField("Field", getPose());
         
     }
     public void setModuleStates(SwerveModuleState[] desiredStates) {

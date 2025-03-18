@@ -1,7 +1,6 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import com.pathplanner.lib.config.PIDConstants;
 
@@ -53,11 +52,11 @@ public class Constants {
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;
         public static final double kG = 0.021000;
-        public static final double kV = 0.656140;
+        public static final double kV = 0.642140;
         public static final double kA = 0.0;
 
-        public static final double kMaxVelocity = 0.9;
-        public static final double kMaxAcceleration = 0.6;
+        public static final double kMaxVelocity = 1.25;
+        public static final double kMaxAcceleration = 0.85;
 
         // PID CONSTANTS
         public static final double kP = 0.0;
@@ -167,7 +166,7 @@ public class Constants {
         public static final double kPhysicalMaxSpeedMetersPerSecond = (ModuleConstants.kMaxMotorRPM / (1 / ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI)/ 60;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = (kPhysicalMaxSpeedMetersPerSecond / Units.inchesToMeters(35)) * 2 * Math.PI;
 
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond * 0.5;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond * 0.6875 * 1.2;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond * 0.2;
         
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
