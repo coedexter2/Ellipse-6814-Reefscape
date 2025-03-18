@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -80,7 +81,15 @@ public class SwerveSubsystem extends SubsystemBase {
                 }, new Pose2d(0, 0, new Rotation2d()));
             
                 public SwerveSubsystem() {
-            
+
+                    if (DriverStation.getAlliance().get() == Alliance.Blue){
+                    gyro.getConfigurator().setYaw(180);
+                    } else {
+                        gyro.getConfigurator().setYaw(0);
+                    }
+
+
+
                     m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
 
                     try {
