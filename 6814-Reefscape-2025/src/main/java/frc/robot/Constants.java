@@ -1,7 +1,6 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import com.pathplanner.lib.config.PIDConstants;
 
@@ -29,6 +28,7 @@ public class Constants {
         public static final double kClimbMotorGearRatio = (1.0 / 500.0);
         public static final double kClimbEncoderRotToRadians = kClimbMotorGearRatio * 2 * Math.PI; // fix this
     
+        public static final double kClimbHomeSpeed = 0.2;
         public static final double kClimbSpeed = 0.5;
         public static final double kClimbSetpoint = Math.toRadians(125);
     }
@@ -45,17 +45,18 @@ public class Constants {
         public static final double kElevatorHeightLimit = 0.0;
 
         public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
-        public static final double kMaxMotorVoltage = 11;
+        public static final double kMaxMotorVoltage = 11; // 
         public static final boolean kClampBatteryVoltageToMaxVoltage = true;
+
         
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;
-        public static final double kG = 0.016;
-        public static final double kV = 0.0;
+        public static final double kG = 0.021000;
+        public static final double kV = 0.642140;
         public static final double kA = 0.0;
 
-        public static final double kMaxVelocity = 0.8;
-        public static final double kMaxAcceleration = 0.4;
+        public static final double kMaxVelocity = 1.25;
+        public static final double kMaxAcceleration = 0.85;
 
         // PID CONSTANTS
         public static final double kP = 0.0;
@@ -63,11 +64,10 @@ public class Constants {
         public static final double kD = 0.0;
 
         // LEVELS
-
         public static final double kFirstLevel = 0.0;
         public static final double kSecondLevel = Units.inchesToMeters(12.49 + 4); //12.49
         public static final double kThirdLevel = Units.inchesToMeters(28.33 + 4); //28.33
-        public static final double kFourthLevel = Units.inchesToMeters(52.36);
+        public static final double kFourthLevel = Units.inchesToMeters(53.36); //54.36
     }
 
     public static final class ModuleConstants {
@@ -166,15 +166,16 @@ public class Constants {
         public static final double kPhysicalMaxSpeedMetersPerSecond = (ModuleConstants.kMaxMotorRPM / (1 / ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI)/ 60;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = (kPhysicalMaxSpeedMetersPerSecond / Units.inchesToMeters(35)) * 2 * Math.PI;
 
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2 / 2 / 5 * 1.5;
-        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 10 / 3;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond * 0.6875 * 1.2;
+        public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond * 0.2;
         
-        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 5;
+        public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
     }
 
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0;
+        public static final int kElevatorJoystickPort = 1;
 
         public static final int kDriverYAxis = 0;
         public static final int kDriverXAxis = 1;
@@ -193,5 +194,28 @@ public static final class FieldConstants
 
                                                     {{{12.007,4.986,60},{12.320,5.153,60}},{{13.410,5.382,120},{13.670,5.231,120}},{{14.421,4.433,180},{14.421,4.136,180}},
                                                     {{13.722,2.822,240},{13.441,2.687,240}},{{12.353,2.883,300},{12.098,3.029,300}},{{11.710,4.121,0},{11.731,4.371,0}}}};
+
 }
+
+public static final class AutoAlignConstants
+{
+    public static final double kLeftReefOffset = 0.0;
+    public static final double kRightReefOffset = 0.0;
+    
+    public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
+    public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
+
+    // Size of bot in Y Axis (including bumpers) see diagram
+    public static final double kBotYSize = Units.inchesToMeters(38); //TODO: Get the correct botysize
+
+    /*
+     *   The ^ is the shooter
+     * ----------- 
+     * |    ^    |
+     * |    ^    |  < This side is kBotYSize
+     * |         |
+     * -----------
+     */
+}
+
 }

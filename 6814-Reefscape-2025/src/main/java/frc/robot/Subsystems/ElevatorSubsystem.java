@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 @Logged
 public class ElevatorSubsystem extends SubsystemBase{
@@ -43,7 +44,14 @@ public class ElevatorSubsystem extends SubsystemBase{
             m_elevator.setVoltage(speed * ElevatorConstants.kMaxMotorVoltage);
         }
         
-        //m_elevator.set(speed);
+        // m_elevator.set(speed);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("elevator pos", getEncoderPosition());
+        getLimitSwitch();
+
     }
 
     public void resetEncoder() {
