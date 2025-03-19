@@ -176,9 +176,8 @@ public class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double sourceAngle = 30;
-        // red top, red bottom, blue top blue bottom
-        public static final double[][] stations = {{16.249,7.106,234},{16.570,0.817,126},{0.817,7.579,306},{0.616,0.517,240}};
+        public static final int[] kBlueStationTags = {2,1};
+        public static final int[] kRedStationTags =  {13,12};
     }
 
     public static final class OIConstants {

@@ -2,14 +2,18 @@ package frc.robot.Commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.AutoAlignConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
@@ -24,6 +28,7 @@ public class SourceLockCmd extends Command {
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter, slowX, slowY;
     private final ElevatorSubsystem m_ElevatorSubsystem;
     private final PIDController controller = new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD);
+        private final AprilTagFieldLayout fieldTags = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     double speedModifer;
     public SourceLockCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction,
@@ -53,7 +58,9 @@ public class SourceLockCmd extends Command {
         // 1. Get real-time joystick inputs and angle lock instead of turning 
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
-        double turningSpeed = controller.calculate(swerveSubsystem.getHeading(), Constants.DriveConstants.stations[getSide()][2]);
+        Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
+        double Rotation = closestAprilTagPose.getRotation().getDegrees();
+        double turningSpeed = controller.calculate(swerveSubsystem.getHeading(), Rotation);
         
         if (slowSupplier.get() > 0.5) {
             speedModifer = 0.5;
@@ -126,20 +133,32 @@ public class SourceLockCmd extends Command {
         return false;
     }
 
-    public int getSide()
+    public int getClosestAprilTag()
     {
-        double closest = 0;
-        int side = 0;
-        for(int i = 0; i < Constants.DriveConstants.stations.length; i++)
+        int[] myStation;
+        if(DriverStation.getAlliance().get() == Alliance.Red)
         {
-            double distance = getDistanceBetweenBotAndPoint(Constants.DriveConstants.stations[i][0], Constants.DriveConstants.stations[i][1]);
-            if(distance > closest)
+            myStation = Constants.DriveConstants.kRedStationTags;
+        }
+        else
+        {
+            myStation = Constants.DriveConstants.kBlueStationTags;
+        }
+        
+        int closestTag = -1;
+        double minDistance = Double.POSITIVE_INFINITY;
+        for(int tagID : myStation)
+        {
+            Pose2d tagPosition = fieldTags.getTagPose(tagID).get().toPose2d();
+            double distance = getDistanceBetweenBotAndPoint(tagPosition.getX(), tagPosition.getY());
+            if(distance < minDistance)
             {
-                closest = distance;
-                side = i;
+                closestTag = tagID;
+                minDistance = distance;
             }
         }
-        return side;
+
+        return closestTag;
     }
 
     public double getDistanceBetweenBotAndPoint(double x, double y)
