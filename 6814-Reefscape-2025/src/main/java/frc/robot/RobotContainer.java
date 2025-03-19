@@ -45,6 +45,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
+import frc.robot.Commands.SourceLockCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -83,7 +84,13 @@ public class RobotContainer {
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
     () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
     () -> m_DriveJoystick.getRawAxis(3)), new LimelightUpdate(m_Swerve));
-  
+
+    private final ParallelCommandGroup LockedSwerve = new ParallelCommandGroup(new SourceLockCmd(
+      m_Swerve, m_Elevator,
+      () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
+      () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverYAxis), 
+      () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
+      () -> m_DriveJoystick.getRawAxis(3)));
 
    
   // public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
@@ -114,6 +121,7 @@ public class RobotContainer {
 
    m_Swerve.setDefaultCommand(Swerve);
 
+    new JoystickButton(m_DriveJoystick, 0).whileTrue(LockedSwerve);
 
     new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
