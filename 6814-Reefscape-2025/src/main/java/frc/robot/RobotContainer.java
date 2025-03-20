@@ -36,14 +36,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ClimbConstants;
-import frc.robot.Commands.ArmCmd;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.ClimbCmd;
 import frc.robot.Commands.ClimbHomeCmd;
 import frc.robot.Commands.ElevatorCommand;
-import frc.robot.Commands.GroundIntakeCmd;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
@@ -58,15 +55,12 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.LimelightUpdate;
 import frc.robot.Commands.SwerveJoystickCmd;
-import frc.robot.Subsystems.ArmSubsystem;
 import frc.robot.Subsystems.ClimbSubsystem;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.GroundIntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OuttakeConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Subsystems.ElevatorSubsystem;
-import frc.robot.Subsystems.GroundIntakeSubsystem;
 import frc.robot.Subsystems.OuttakeSubsystem;
 import frc.robot.Subsystems.SwerveSubsystem;
 
@@ -76,8 +70,7 @@ public class RobotContainer {
   private final Joystick m_DriveJoystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   public final Joystick m_ElevatorJoystick = new Joystick(OIConstants.kElevatorJoystickPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
-  private final ArmSubsystem m_Arm = new ArmSubsystem();
-private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
+
 
   private final SendableChooser<Command> autoChooser;
 
@@ -133,10 +126,6 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
-
-    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose).
-                        raceWith(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed)).
-                        andThen(new ArmCmd(m_Arm, ArmConstants.kUpPose)));
 
     new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
     new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
