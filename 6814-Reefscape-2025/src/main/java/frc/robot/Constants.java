@@ -213,4 +213,39 @@ public static final class AutoAlignConstants
      */
 }
 
+public static final class ArmConstants
+{
+    public static final int kArmMotorPort = 0; // fix this 
+
+    public static final double kArmEncoderRot2Meters = 0; // I'll fix this 
+
+    //feedforward
+    public static final double kS = 0.0;
+    public static final double kG = 0.0;
+    public static final double kV = 0.0;
+    public static final double kA = 0.0;
+
+    //motion profiler
+    public static final double kMaxVelocity = 0;
+    public static final double kMaxAcceleration = 0;
+
+    // PID 
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    
+    //positions 
+    public static final double kDownPose = 0;
+    public static final double kUpPose = 0;
+}
+
+public static final class GroundIntakeConstants
+{
+    public static final int kArmMotorPort = 0; // fix this 
+    public static final int kBeambreakPort = 0; // fix this 
+
+    public static final double kGroundIntakeSpeed = 0;
+}
+
+
 }
