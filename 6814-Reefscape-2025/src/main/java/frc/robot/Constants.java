@@ -237,6 +237,7 @@ public static final class ArmConstants
     //positions 
     public static final double kDownPose = 0;
     public static final double kUpPose = 0;
+    public static final double kL1Pose = 0;
 }
 
 public static final class GroundIntakeConstants
@@ -245,6 +246,7 @@ public static final class GroundIntakeConstants
     public static final int kBeambreakPort = 0; // fix this 
 
     public static final double kGroundIntakeSpeed = 0;
+    public static final double kGroundOuttakeSpeed = 0;
 }
 
 

@@ -27,6 +27,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,6 +58,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.LimelightUpdate;
+import frc.robot.Commands.LoadCmd;
 import frc.robot.Commands.SwerveJoystickCmd;
 import frc.robot.Subsystems.ArmSubsystem;
 import frc.robot.Subsystems.ClimbSubsystem;
@@ -134,9 +136,22 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
+    // ground intake commands:
+    // intake itself
     new JoystickButton(m_ElevatorJoystick, 0).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose).
                         raceWith(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed)).
                         andThen(new ArmCmd(m_Arm, ArmConstants.kUpPose)));
+
+    // deposite
+    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new LoadCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed).withTimeout(1));
+
+    // set L1 
+    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new ArmCmd(m_Arm, ArmConstants.kL1Pose));
+
+    // deposite L1 and go back 
+    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new LoadCmd(m_Ground, GroundIntakeConstants.kGroundOuttakeSpeed).
+                                                                withTimeout(1).
+                                                                andThen(new ArmCmd(m_Arm, ArmConstants.kDownPose)));
 
     new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
     new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
