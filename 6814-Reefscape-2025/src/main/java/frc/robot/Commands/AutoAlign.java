@@ -41,34 +41,34 @@ public class AutoAlign extends Command {
         SmartDashboard.putBoolean("isaligned", false);
         
         Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
-        double tagRotation = closestAprilTagPose.getRotation().getRadians();
+        double tagRotation = closestAprilTagPose.getRotation().getRadians() + Math.PI;
         double x, y;
 
         if(alignment == ReefAlignment.LEFT)
         {
             x = closestAprilTagPose.getX()
-                + Math.cos(tagRotation) * (AutoAlignConstants.kBotYSize / 2) // Push bot out of reef
+                + Math.cos(tagRotation + Math.PI) * (AutoAlignConstants.kBotYSize / 2) // Push bot out of reef
                 + Math.cos(tagRotation + Math.PI / 2) * AutoAlignConstants.kLeftReefOffset; // Offset to the left
             y = closestAprilTagPose.getY() 
-                + Math.sin(tagRotation) * (AutoAlignConstants.kBotYSize / 2)
+                + Math.sin(tagRotation + Math.PI) * (AutoAlignConstants.kBotYSize / 2)
                 + Math.sin(tagRotation + Math.PI / 2) * AutoAlignConstants.kLeftReefOffset;
         }
         else
         {
             x = closestAprilTagPose.getX()
-                + Math.cos(tagRotation) * (AutoAlignConstants.kBotYSize / 2) // Push bot out of reef
+                + Math.cos(tagRotation + Math.PI) * (AutoAlignConstants.kBotYSize / 2) // Push bot out of reef
                 + Math.cos(tagRotation + Math.PI / 2) * AutoAlignConstants.kRightReefOffset; // Offset to the right
             y = closestAprilTagPose.getY() 
-                + Math.sin(tagRotation) * (AutoAlignConstants.kBotYSize / 2)
+                + Math.sin(tagRotation + Math.PI) * (AutoAlignConstants.kBotYSize / 2)
                 + Math.sin(tagRotation + Math.PI / 2) * AutoAlignConstants.kRightReefOffset;
         }
 
         Pose2d startPose = m_SwerveSubsystem.getPose();
-        Pose2d finalPose = new Pose2d(x, y, Rotation2d.fromDegrees(Math.atan2(m_SwerveSubsystem.getPose().getX()-x,m_SwerveSubsystem.getPose().getY()-y)));
+        Pose2d finalPose = new Pose2d(x, y, Rotation2d.fromDegrees(Math.atan2(m_SwerveSubsystem.getPose().getY()-y, m_SwerveSubsystem.getPose().getX()-x)));
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, finalPose);
 
-        PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
+        PathConstraints constraints = new PathConstraints(0.3, 0.5, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
     
 
         PathPlannerPath path = new PathPlannerPath(
@@ -86,7 +86,8 @@ public class AutoAlign extends Command {
     @Override
     public void end(boolean interrupted)
     {
-        m_SwerveSubsystem.stopModules();
+        // m_SwerveSubsystem.stopModules();
+        // m_SwerveSubsystem.getCurrentCommand().cancel();
         SmartDashboard.putBoolean("isaligned", true);
     }
     
@@ -100,7 +101,7 @@ public class AutoAlign extends Command {
     public int getClosestAprilTag()
     {
         int[] myReef;
-        if(DriverStation.getAlliance().get() == Alliance.Red)
+        if(DriverStation.getAlliance().get() == Alliance.Red) //TODO: When we fix the apriltag fix this please (its reversed alliances)
         {
             myReef = AutoAlignConstants.kRedReefTags;
         }
@@ -109,7 +110,7 @@ public class AutoAlign extends Command {
             myReef = AutoAlignConstants.kBlueReefTags;
         }
         
-        int closestTag = -1;
+        int closestTag = 0;
         double minDistance = Double.POSITIVE_INFINITY;
         for(int tagID : myReef)
         {
