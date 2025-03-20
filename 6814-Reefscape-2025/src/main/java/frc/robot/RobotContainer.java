@@ -119,16 +119,26 @@ public class RobotContainer {
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
-    new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
-    new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
-    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
-    new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+    // new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    // new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
+    // new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    // new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+
+    new POVButton(m_DriveJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    new POVButton(m_DriveJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
+    new POVButton(m_DriveJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    new POVButton(m_DriveJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+
+    new JoystickButton(m_DriveJoystick, 1).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
+    new JoystickButton(m_DriveJoystick, 3).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new ClimbCmd(m_Climb, ClimbConstants.kClimbSetpoint, ClimbConstants.kClimbSpeed).onlyIf(()->m_ElevatorJoystick.getRawAxis(3) > 0.5));
 
 
-    new JoystickButton(m_DriveJoystick, 4).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
-    new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
+    new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
+    new JoystickButton(m_DriveJoystick, 6).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
+    
+    // new JoystickButton(m_DriveJoystick, 2).whileTrue(new OuttakeCmd(m_Out, 1));
 
     // SmartDashboard.putNumber("ks", 0);
     // SmartDashboard.putNumber("kg", 0);
