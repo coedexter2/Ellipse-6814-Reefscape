@@ -71,6 +71,8 @@ public class RobotContainer {
   public final Joystick m_ElevatorJoystick = new Joystick(OIConstants.kElevatorJoystickPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
 
+  public final Command m_limelightUpdater = new LimelightUpdate(m_Swerve);
+
 
   private final SendableChooser<Command> autoChooser;
 
@@ -83,7 +85,7 @@ public class RobotContainer {
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
     () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
-    () -> m_DriveJoystick.getRawAxis(3)), new LimelightUpdate(m_Swerve));
+    () -> m_DriveJoystick.getRawAxis(3)), m_limelightUpdater);
 
     private final ParallelCommandGroup LockedSwerve = new ParallelCommandGroup(new SourceLockCmd(
       m_Swerve, m_Elevator,
@@ -121,24 +123,24 @@ public class RobotContainer {
 
    m_Swerve.setDefaultCommand(Swerve);
 
-    new JoystickButton(m_DriveJoystick, 0).whileTrue(LockedSwerve);
+    new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
 
     new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
-    // new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
-    // new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
-    // new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
-    // new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+    new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
+    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
 
-    new POVButton(m_DriveJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
-    new POVButton(m_DriveJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
-    new POVButton(m_DriveJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
-    new POVButton(m_DriveJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+    // new POVButton(m_DriveJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    // new POVButton(m_DriveJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
+    // new POVButton(m_DriveJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    // new POVButton(m_DriveJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
 
-    new JoystickButton(m_DriveJoystick, 1).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
-    new JoystickButton(m_DriveJoystick, 3).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
+    // new JoystickButton(m_DriveJoystick, 1).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
+    // new JoystickButton(m_DriveJoystick, 3).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new ClimbCmd(m_Climb, ClimbConstants.kClimbSetpoint, ClimbConstants.kClimbSpeed).onlyIf(()->m_ElevatorJoystick.getRawAxis(3) > 0.5));
 

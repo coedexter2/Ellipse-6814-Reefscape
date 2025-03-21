@@ -7,10 +7,13 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoAlignConstants;
@@ -27,7 +30,7 @@ public class SourceLockCmd extends Command {
     private final Supplier<Boolean> fieldOrientedFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter, slowX, slowY;
     private final ElevatorSubsystem m_ElevatorSubsystem;
-    private final PIDController controller = new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD);
+    private final PIDController controller = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
         private final AprilTagFieldLayout fieldTags = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     double speedModifer;
     public SourceLockCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
@@ -59,9 +62,12 @@ public class SourceLockCmd extends Command {
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
         Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
-        double Rotation = closestAprilTagPose.getRotation().getDegrees();
-        double turningSpeed = controller.calculate(swerveSubsystem.getHeading(), Rotation);
-        
+        double Rotation = closestAprilTagPose.getRotation().getRadians();
+        controller.setPID(SmartDashboard.getNumber("kayp", 0.0), 0.0, 0.0);
+        double turningSpeed = controller.calculate(Units.degreesToRadians(swerveSubsystem.getHeading()), Rotation);
+        SmartDashboard.putNumber("Target Angle Aimlock", Units.radiansToDegrees(Rotation));
+        SmartDashboard.putNumber("aimlock output", turningSpeed);
+
         if (slowSupplier.get() > 0.5) {
             speedModifer = 0.5;
 
