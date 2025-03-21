@@ -63,7 +63,6 @@ public class SourceLockCmd extends Command {
         double ySpeed = ySpdFunction.get();
         Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
         double Rotation = closestAprilTagPose.getRotation().getRadians();
-        controller.setPID(SmartDashboard.getNumber("kayp", 0.0), 0.0, 0.0);
         double turningSpeed = controller.calculate(Units.degreesToRadians(swerveSubsystem.getHeading()), Rotation);
         SmartDashboard.putNumber("Target Angle Aimlock", Units.radiansToDegrees(Rotation));
         SmartDashboard.putNumber("aimlock output", turningSpeed);

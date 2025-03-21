@@ -63,12 +63,14 @@ public class AutoAlign extends Command {
                 + Math.sin(tagRotation + Math.PI / 2) * AutoAlignConstants.kRightReefOffset;
         }
 
-        Pose2d startPose = m_SwerveSubsystem.getPose();
-        Pose2d finalPose = new Pose2d(x, y, Rotation2d.fromDegrees(Math.atan2(m_SwerveSubsystem.getPose().getY()-y, m_SwerveSubsystem.getPose().getX()-x)));
+        Pose2d swervePose = m_SwerveSubsystem.getPose();
+        Rotation2d rotationBetwenSwerveAndTarget = Rotation2d.fromRadians(Math.atan2(m_SwerveSubsystem.getPose().getY()-y, m_SwerveSubsystem.getPose().getX()-x));
+        Pose2d startPose = new Pose2d(swervePose.getX(), swervePose.getY(), rotationBetwenSwerveAndTarget); 
+        Pose2d finalPose = new Pose2d(x, y, rotationBetwenSwerveAndTarget);
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, finalPose);
 
-        PathConstraints constraints = new PathConstraints(0.3, 0.5, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
+        PathConstraints constraints = new PathConstraints(1.2, 1.4, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
     
 
         PathPlannerPath path = new PathPlannerPath(
@@ -80,7 +82,7 @@ public class AutoAlign extends Command {
         );
         path.preventFlipping = true;
 
-        AutoBuilder.followPath(path).schedule();
+        AutoBuilder.followPath(path).raceWith(new LimelightUpdate(m_SwerveSubsystem)).schedule();
     }
 
     @Override

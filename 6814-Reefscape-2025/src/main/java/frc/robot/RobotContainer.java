@@ -118,6 +118,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Elevator 3", new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
     NamedCommands.registerCommand("Elevator 4", new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
 
+    NamedCommands.registerCommand("Align Left", new AutoAlign(m_Swerve, ReefAlignment.LEFT));
+    NamedCommands.registerCommand("Align Right", new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
+
   NamedCommands.registerCommand("Limelight", new LimelightUpdate(m_Swerve));
 
 
