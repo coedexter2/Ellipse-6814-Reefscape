@@ -78,7 +78,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     backLeft.getPosition(),
                     frontRight.getPosition(),
                     backRight.getPosition()
-                }, new Pose2d(0, 0, new Rotation2d()));
+                }, new Pose2d(0, 0, DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.k180deg : Rotation2d.kZero)); //Fixes spiraling
             
                 public SwerveSubsystem() {
 
@@ -90,7 +90,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
 
-                    m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
+                    m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1, 1, 999999999));
 
                     try {
 

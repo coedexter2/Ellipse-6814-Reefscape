@@ -161,8 +161,10 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new ClimbCmd(m_Climb, ClimbConstants.kClimbSetpoint, ClimbConstants.kClimbSpeed).onlyIf(()->m_ElevatorJoystick.getRawAxis(3) > 0.5));
 
 
-    new JoystickButton(m_DriveJoystick, 4).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
-    new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
+    new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
+    new JoystickButton(m_DriveJoystick, 6).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
+    
+    // new JoystickButton(m_DriveJoystick, 2).whileTrue(new OuttakeCmd(m_Out, 1));
 
     // SmartDashboard.putNumber("ks", 0);
     // SmartDashboard.putNumber("kg", 0);

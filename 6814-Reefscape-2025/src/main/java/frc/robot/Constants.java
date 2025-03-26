@@ -194,14 +194,14 @@ public class Constants {
 
 public static final class AutoAlignConstants
 {
-    public static final double kLeftReefOffset = 0.0;
-    public static final double kRightReefOffset = 0.0;
+    public static final double kLeftReefOffset = Units.inchesToMeters(-9);
+    public static final double kRightReefOffset = Units.inchesToMeters(5);
     
     public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
     public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
 
     // Size of bot in Y Axis (including bumpers) see diagram
-    public static final double kBotYSize = Units.inchesToMeters(38); //TODO: Get the correct botysize
+    public static final double kBotYSize = Units.inchesToMeters(36); //TODO: Get the correct botysize
 
     /*
      *   The ^ is the shooter
