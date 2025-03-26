@@ -27,6 +27,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,11 +37,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ClimbConstants;
+import frc.robot.Commands.ArmCmd;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.AutoAlign;
 import frc.robot.Commands.ClimbCmd;
 import frc.robot.Commands.ClimbHomeCmd;
 import frc.robot.Commands.ElevatorCommand;
+import frc.robot.Commands.GroundIntakeCmd;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
@@ -54,13 +58,17 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.LimelightUpdate;
+import frc.robot.Commands.LoadCmd;
 import frc.robot.Commands.SwerveJoystickCmd;
+import frc.robot.Subsystems.ArmSubsystem;
 import frc.robot.Subsystems.ClimbSubsystem;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.GroundIntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OuttakeConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Subsystems.ElevatorSubsystem;
+import frc.robot.Subsystems.GroundIntakeSubsystem;
 import frc.robot.Subsystems.OuttakeSubsystem;
 import frc.robot.Subsystems.SwerveSubsystem;
 
@@ -70,7 +78,8 @@ public class RobotContainer {
   private final Joystick m_DriveJoystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   public final Joystick m_ElevatorJoystick = new Joystick(OIConstants.kElevatorJoystickPort);
   private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
-
+  private final ArmSubsystem m_Arm = new ArmSubsystem();
+private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -127,18 +136,27 @@ public class RobotContainer {
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
-    // new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
-    // new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
-    // new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
-    // new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+    // ground intake commands:
+    // intake itself
+    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose).
+                        raceWith(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed)).
+                        andThen(new ArmCmd(m_Arm, ArmConstants.kUpPose)));
 
-    new POVButton(m_DriveJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
-    new POVButton(m_DriveJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
-    new POVButton(m_DriveJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
-    new POVButton(m_DriveJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
+    // deposite
+    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new LoadCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed).withTimeout(1));
 
-    new JoystickButton(m_DriveJoystick, 1).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
-    new JoystickButton(m_DriveJoystick, 3).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
+    // set L1 
+    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new ArmCmd(m_Arm, ArmConstants.kL1Pose));
+
+    // deposite L1 and go back 
+    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new LoadCmd(m_Ground, GroundIntakeConstants.kGroundOuttakeSpeed).
+                                                                withTimeout(1).
+                                                                andThen(new ArmCmd(m_Arm, ArmConstants.kDownPose)));
+
+    new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
+    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new ClimbCmd(m_Climb, ClimbConstants.kClimbSetpoint, ClimbConstants.kClimbSpeed).onlyIf(()->m_ElevatorJoystick.getRawAxis(3) > 0.5));
 
