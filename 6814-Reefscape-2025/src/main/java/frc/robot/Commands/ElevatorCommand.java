@@ -39,7 +39,6 @@ public class ElevatorCommand extends Command {
                                                    0.0);
 
         addRequirements(subsystem);
-        addRequirements(subsystem);
     }
 
     @Override

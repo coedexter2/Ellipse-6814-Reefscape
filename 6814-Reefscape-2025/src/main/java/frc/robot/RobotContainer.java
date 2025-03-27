@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Newton;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.swing.GroupLayout.Alignment;
@@ -27,6 +28,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,6 +47,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
+import frc.robot.Commands.ReefLockCmd;
 import frc.robot.Commands.SourceLockCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -85,14 +88,21 @@ public class RobotContainer {
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
     () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverRotAxis),
     () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
-    () -> m_DriveJoystick.getRawAxis(3)), m_limelightUpdater);
+    () -> m_DriveJoystick.getRawAxis(3)), new LimelightUpdate(m_Swerve));
 
     private final ParallelCommandGroup LockedSwerve = new ParallelCommandGroup(new SourceLockCmd(
       m_Swerve, m_Elevator,
       () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
       () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverYAxis), 
       () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
-      () -> m_DriveJoystick.getRawAxis(3)));
+      () -> m_DriveJoystick.getRawAxis(3)), new LimelightUpdate(m_Swerve));
+
+      private final ParallelCommandGroup ReefLockSwerve = new ParallelCommandGroup(new ReefLockCmd(
+        m_Swerve, m_Elevator,
+        () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
+        () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
+        () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
+        () -> m_DriveJoystick.getRawAxis(3)), new LimelightUpdate(m_Swerve));
 
    
   // public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
@@ -110,7 +120,7 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    NamedCommands.registerCommand("Outtake", new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(2));
+    NamedCommands.registerCommand("Outtake", new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(0.65));
     NamedCommands.registerCommand("Intake", new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
 
     NamedCommands.registerCommand("Elevator 1", new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
@@ -118,7 +128,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Elevator 3", new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
     NamedCommands.registerCommand("Elevator 4", new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
 
-    NamedCommands.registerCommand("Align Left", new AutoAlign(m_Swerve, ReefAlignment.LEFT));
+    NamedCommands.registerCommand("Align Left", new AutoAlign(m_Swerve, ReefAlignment.LEFT).withTimeout(3));
     NamedCommands.registerCommand("Align Right", new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
 
   NamedCommands.registerCommand("Limelight", new LimelightUpdate(m_Swerve));
@@ -127,6 +137,7 @@ public class RobotContainer {
    m_Swerve.setDefaultCommand(Swerve);
 
     new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
+    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
     new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
@@ -170,7 +181,6 @@ public class RobotContainer {
    
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
-
     
     configureBindings();
   }

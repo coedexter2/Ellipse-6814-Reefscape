@@ -59,7 +59,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.3
+                        "waitTime": 2.2
                       }
                     },
                     {
@@ -118,7 +118,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Source to Left E"
+                  "pathName": "Source Left NW"
                 }
               }
             ]

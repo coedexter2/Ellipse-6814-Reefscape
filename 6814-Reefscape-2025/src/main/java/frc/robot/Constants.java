@@ -4,6 +4,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
@@ -172,13 +173,16 @@ public class Constants {
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
 
-        public static final double kP = 0.5;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kP = 0.55;
+        public static final double kI = 0.5;
+        public static final double kD = 0.05;
 
 
         public static final int[] kRedStationTags = {2,1};
         public static final int[] kBlueStationTags =  {13,12};
+
+        public static final Translation2d kBlueReefPos = new Translation2d(4.490, 4.020);
+        public static final Translation2d kRedReefPos = new Translation2d(13.056, 4.020);
     }
 
     public static final class OIConstants {
@@ -195,8 +199,8 @@ public class Constants {
 
 public static final class AutoAlignConstants
 {
-    public static final double kLeftReefOffset = Units.inchesToMeters(-9);
-    public static final double kRightReefOffset = Units.inchesToMeters(5);
+    public static final double kLeftReefOffset = Units.inchesToMeters(-10.25);
+    public static final double kRightReefOffset = Units.inchesToMeters(4.25);
     
     public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
     public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };

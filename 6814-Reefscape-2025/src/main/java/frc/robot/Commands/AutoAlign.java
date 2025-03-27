@@ -1,19 +1,29 @@
 package frc.robot.Commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.ConstraintsZone;
+import com.pathplanner.lib.path.EventMarker;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PointTowardsZone;
+import com.pathplanner.lib.path.RotationTarget;
 import com.pathplanner.lib.path.Waypoint;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -26,17 +36,18 @@ public class AutoAlign extends Command {
     private final SwerveSubsystem m_SwerveSubsystem;
     private final AprilTagFieldLayout fieldTags = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     private final ReefAlignment alignment;
+    private Command pathplannerDriveCommand;
 
     public AutoAlign(SwerveSubsystem subsystem, ReefAlignment alignment) 
     {
         m_SwerveSubsystem = subsystem;
         this.alignment = alignment;
 
-        addRequirements(subsystem);
+        // addRequirements(subsystem);
     }
 
     @Override
-    public void execute() 
+    public void initialize() 
     {
         SmartDashboard.putBoolean("isaligned", false);
         
@@ -66,30 +77,52 @@ public class AutoAlign extends Command {
         Pose2d swervePose = m_SwerveSubsystem.getPose();
         Rotation2d rotationBetwenSwerveAndTarget = Rotation2d.fromRadians(Math.atan2(m_SwerveSubsystem.getPose().getY()-y, m_SwerveSubsystem.getPose().getX()-x));
         Pose2d startPose = new Pose2d(swervePose.getX(), swervePose.getY(), rotationBetwenSwerveAndTarget); 
-        Pose2d finalPose = new Pose2d(x, y, rotationBetwenSwerveAndTarget);
+        Pose2d finalPose = new Pose2d(x, y, closestAprilTagPose.getRotation().plus(Rotation2d.k180deg));
+
+        double distanceBetweenPoses = Math.sqrt(Math.pow(finalPose.getX() - startPose.getX(), 2) +
+                                                Math.pow(finalPose.getY() - startPose.getY(), 2));
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, finalPose);
 
-        PathConstraints constraints = new PathConstraints(1.2, 1.4, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
-    
+        PathConstraints constraints = new PathConstraints(2, 1.4, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
+        List<RotationTarget> rotationTargets = new ArrayList<>(); // Empty list
+        List<PointTowardsZone> pointTowardsZones = new ArrayList<>();
+        List<EventMarker> eventMarkers = new ArrayList<>();
 
-        PathPlannerPath path = new PathPlannerPath(
+        List<ConstraintsZone> constraintsZones = Arrays.asList(new ConstraintsZone(Math.min(1.0, 1.0 - (0.5 / distanceBetweenPoses)), 1.0, new PathConstraints(0.6, 5, 2 * Math.PI, 4 * Math.PI)));
+
+        PathPlannerPath path = new PathPlannerPath( 
                 waypoints,
+                rotationTargets,
+                pointTowardsZones,
+                constraintsZones,
+                eventMarkers,
                 constraints,
                 null,
                 //new GoalEndState(0.0, Rotation2d.fromDegrees(degrees))
-                new GoalEndState(0.0, Rotation2d.fromRadians(tagRotation)) //TODO: if bot is aligning the wrong way chang this rotation 
+                new GoalEndState(0.0, Rotation2d.fromRadians(tagRotation)), //TODO: if bot is aligning the wrong way chang this rotation
+                false
         );
         path.preventFlipping = true;
 
-        AutoBuilder.followPath(path).raceWith(new LimelightUpdate(m_SwerveSubsystem)).schedule();
+        pathplannerDriveCommand = AutoBuilder.followPath(path).raceWith(new LimelightUpdate(m_SwerveSubsystem));
+        pathplannerDriveCommand.schedule();
+
+        SmartDashboard.putString("TargetPose", finalPose.toString());
+    }
+
+    @Override
+    public void execute()
+    {
+
     }
 
     @Override
     public void end(boolean interrupted)
     {
         // m_SwerveSubsystem.stopModules();
-        // m_SwerveSubsystem.getCurrentCommand().cancel();
+        SmartDashboard.putNumber("I hate cooper", Timer.getFPGATimestamp());
+        pathplannerDriveCommand.cancel();
         SmartDashboard.putBoolean("isaligned", true);
     }
     
@@ -97,7 +130,7 @@ public class AutoAlign extends Command {
     @Override
     public boolean isFinished() 
     {
-        return false;
+        return pathplannerDriveCommand.isFinished();
     }
 
     public int getClosestAprilTag()
