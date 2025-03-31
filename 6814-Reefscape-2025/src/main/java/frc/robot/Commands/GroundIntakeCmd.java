@@ -32,6 +32,6 @@ public class GroundIntakeCmd extends Command {
     @Override
     public boolean isFinished() 
     {
-        return m_GroundIntakeSubsystem.isBroken();
+        return false; 
     }
 }
