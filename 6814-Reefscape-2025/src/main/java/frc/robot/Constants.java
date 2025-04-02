@@ -68,6 +68,7 @@ public class Constants {
         public static final double kSecondLevel = Units.inchesToMeters(12.49 + 4); //12.49
         public static final double kThirdLevel = Units.inchesToMeters(28.33 + 4); //28.33
         public static final double kFourthLevel = Units.inchesToMeters(53.36); //54.36
+        public static final double kSourceIntake = 0.0;
     }
 
     public static final class ModuleConstants {

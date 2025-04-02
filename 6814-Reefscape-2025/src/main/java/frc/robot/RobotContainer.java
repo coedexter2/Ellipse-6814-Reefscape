@@ -131,7 +131,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
 
     new JoystickButton(m_DriveJoystick, 0).whileTrue(LockedSwerve);
 
-    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
@@ -146,7 +146,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
     new JoystickButton(m_DriveJoystick, 6).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
     
-    new JoystickButton(m_ElevatorJoystick, 7).onTrue(new ArmCmd(m_Arm, ArmConstants.kUpPose));
+    new JoystickButton(m_ElevatorJoystick, 7).onTrue(new ArmCmd(m_Arm, ArmConstants.kUpPose).andThen(new IntakeCmd(m_Out, 0)).withTimeout(1));
     new JoystickButton(m_ElevatorJoystick, 5).onTrue(new ArmCmd(m_Arm, ArmConstants.kL1Pose)); 
     new JoystickButton(m_ElevatorJoystick, 8).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose)); 
     
