@@ -68,6 +68,7 @@ public class Constants {
         public static final double kSecondLevel = Units.inchesToMeters(12.49 + 4); //12.49
         public static final double kThirdLevel = Units.inchesToMeters(28.33 + 4); //28.33
         public static final double kFourthLevel = Units.inchesToMeters(53.36); //54.36
+        public static final double kSourceIntake = 0.0;
     }
 
     public static final class ModuleConstants {
@@ -212,5 +213,45 @@ public static final class AutoAlignConstants
      * -----------
      */
 }
+
+public static final class ArmConstants
+{
+    public static final int kArmMotorPort = 0; // fix this 
+
+    public static final double kArmEncoderRot2Meters = 0; // I'll fix this 
+
+    //feedforward
+    public static final double kS = 0.0;
+    public static final double kG = 0.0;
+    public static final double kV = 0.0;
+    public static final double kA = 0.0;
+
+    //motion profiler
+    public static final double kMaxVelocity = 0;
+    public static final double kMaxAcceleration = 0;
+
+    // PID 
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    
+    //positions 
+    public static final double kDownPose = 0;
+    public static final double kUpPose = 0;
+    public static final double kL1Pose = 0;
+    public static final double kIntakePose = 0;
+}
+
+public static final class GroundIntakeConstants
+{
+    public static final int kArmMotorPort = 0; // fix this 
+    public static final int kBeambreakPort = 0; // fix this 
+
+    public static final double kGroundIntakeSpeed = 0;
+    public static final double kGroundOuttakeSpeed = 0;
+
+    public static final double kOuttakeTimeout = 1;
+}
+
 
 }
