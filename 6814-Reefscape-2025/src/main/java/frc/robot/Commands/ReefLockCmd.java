@@ -92,7 +92,8 @@ public class ReefLockCmd extends Command {
 
         }
 
-        turningSpeed *= DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
+        turningSpeed *= DriveConstants.kAutoAimMaxAngularSpeed;
+        turningSpeed = Math.max(Math.min(turningSpeed, DriveConstants.kAutoAimMaxAngularSpeed), -DriveConstants.kAutoAimMaxAngularSpeed);
 
         var alliance = DriverStation.getAlliance();
         var invert = 1;

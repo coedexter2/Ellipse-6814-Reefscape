@@ -2,6 +2,9 @@ package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import java.util.Dictionary;
+import java.util.Set;
+
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -173,10 +176,10 @@ public class Constants {
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
 
-        public static final double kP = 0.55;
-        public static final double kI = 0.5;
-        public static final double kD = 0.05;
-
+        public static final double kP = 0.8;
+        public static final double kI = 0.2;
+        public static final double kD = 0.03;
+        public static final double kAutoAimMaxAngularSpeed = kTeleDriveMaxAngularSpeedRadiansPerSecond * 0.5;
 
         public static final int[] kRedStationTags = {2,1};
         public static final int[] kBlueStationTags =  {13,12};
@@ -204,6 +207,8 @@ public static final class AutoAlignConstants
     
     public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
     public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
+
+    public static final Set<Integer> kFlippedDirectionTags = Set.of(17, 18, 19, 6, 7, 8); // To make sure the bot goes to the drivers' right when they press right
 
     // Size of bot in Y Axis (including bumpers) see diagram
     public static final double kBotYSize = Units.inchesToMeters(36); //TODO: Get the correct botysize

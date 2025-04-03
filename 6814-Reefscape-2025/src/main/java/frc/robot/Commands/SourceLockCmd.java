@@ -62,9 +62,8 @@ public class SourceLockCmd extends Command {
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
         Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
-        double Rotation = closestAprilTagPose.getRotation().getRadians();
-        double turningSpeed = controller.calculate(Units.degreesToRadians(swerveSubsystem.getHeading()), Rotation);
-        SmartDashboard.putNumber("Target Angle Aimlock", Units.radiansToDegrees(Rotation));
+        Rotation2d error = swerveSubsystem.getPose().getRotation().minus(closestAprilTagPose.getRotation());
+        double turningSpeed = controller.calculate(error.getRadians(), 0);
         SmartDashboard.putNumber("aimlock output", turningSpeed);
         SmartDashboard.putNumber("tele drive speed", DriveConstants.kTeleDriveMaxSpeedMetersPerSecond);
         
@@ -81,28 +80,24 @@ public class SourceLockCmd extends Command {
             // 2. Apply deadband
             xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
             ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = speedModifer * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
         else {
             xSpeed = speedModifer * 0.5 * Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
             ySpeed = speedModifer * 0.5 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = speedModifer * 0.5 * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
+
+        turningSpeed *= DriveConstants.kAutoAimMaxAngularSpeed;
+        turningSpeed = Math.max(Math.min(turningSpeed, DriveConstants.kAutoAimMaxAngularSpeed), -DriveConstants.kAutoAimMaxAngularSpeed);
         
         // 3. Make the driving smoother
         if (slowSupplier.get() < 0.5) {
             xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-            turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
 
         }
         else {
             xSpeed = slowX.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             ySpeed = slowY.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-            turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-
         }
 
 

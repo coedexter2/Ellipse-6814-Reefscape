@@ -4,5 +4,21 @@ public enum ReefAlignment
 {
     LEFT,
     MIDDLE,
-    RIGHT
+    RIGHT;
+    
+    public ReefAlignment opposite()
+    {
+        if(this == LEFT)
+        {
+            return RIGHT;
+        }
+        else if (this == RIGHT)
+        {
+            return LEFT;
+        }
+        else
+        {
+            return MIDDLE;
+        }
+    }
 }

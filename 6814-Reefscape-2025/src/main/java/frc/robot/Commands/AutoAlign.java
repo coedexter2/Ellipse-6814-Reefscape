@@ -51,11 +51,15 @@ public class AutoAlign extends Command {
     {
         SmartDashboard.putBoolean("isaligned", false);
         
-        Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
+        int closestAprilTagID = getClosestAprilTag();
+        Pose2d closestAprilTagPose = fieldTags.getTagPose(closestAprilTagID).get().toPose2d();
         double tagRotation = closestAprilTagPose.getRotation().getRadians() + Math.PI;
         double x, y;
 
-        if(alignment == ReefAlignment.LEFT)
+        // Flip if the AprilTag is on the side of the reef closest to the driver so that the drivers' right is the robot's right
+        ReefAlignment trueAlignment = AutoAlignConstants.kFlippedDirectionTags.contains(closestAprilTagID) ? alignment.opposite() : alignment;
+
+        if(trueAlignment == ReefAlignment.LEFT)
         {
             x = closestAprilTagPose.getX()
                 + Math.cos(tagRotation + Math.PI) * (AutoAlignConstants.kBotYSize / 2) // Push bot out of reef
