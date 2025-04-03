@@ -7,10 +7,13 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoAlignConstants;
@@ -27,7 +30,7 @@ public class SourceLockCmd extends Command {
     private final Supplier<Boolean> fieldOrientedFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter, slowX, slowY;
     private final ElevatorSubsystem m_ElevatorSubsystem;
-    private final PIDController controller = new PIDController(Constants.DriveConstants.kP, Constants.DriveConstants.kI, Constants.DriveConstants.kD);
+    private final PIDController controller = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
         private final AprilTagFieldLayout fieldTags = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     double speedModifer;
     public SourceLockCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
@@ -59,8 +62,10 @@ public class SourceLockCmd extends Command {
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
         Pose2d closestAprilTagPose = fieldTags.getTagPose(getClosestAprilTag()).get().toPose2d();
-        double Rotation = closestAprilTagPose.getRotation().getDegrees();
-        double turningSpeed = controller.calculate(swerveSubsystem.getHeading(), Rotation);
+        Rotation2d error = swerveSubsystem.getPose().getRotation().minus(closestAprilTagPose.getRotation());
+        double turningSpeed = controller.calculate(error.getRadians(), 0);
+        SmartDashboard.putNumber("aimlock output", turningSpeed);
+        SmartDashboard.putNumber("tele drive speed", DriveConstants.kTeleDriveMaxSpeedMetersPerSecond);
         
         if (slowSupplier.get() > 0.5) {
             speedModifer = 0.5;
@@ -75,28 +80,24 @@ public class SourceLockCmd extends Command {
             // 2. Apply deadband
             xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
             ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = speedModifer * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
         else {
             xSpeed = speedModifer * 0.5 * Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
             ySpeed = speedModifer * 0.5 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = speedModifer * 0.5 * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
+
+        turningSpeed *= DriveConstants.kAutoAimMaxAngularSpeed;
+        turningSpeed = Math.max(Math.min(turningSpeed, DriveConstants.kAutoAimMaxAngularSpeed), -DriveConstants.kAutoAimMaxAngularSpeed);
         
         // 3. Make the driving smoother
         if (slowSupplier.get() < 0.5) {
             xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-            turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
 
         }
         else {
             xSpeed = slowX.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             ySpeed = slowY.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-            turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-
         }
 
 

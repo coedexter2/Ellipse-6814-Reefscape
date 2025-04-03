@@ -1,7 +1,12 @@
 package frc.robot.Commands;
 
 import java.util.function.Supplier;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,22 +18,25 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.SwerveSubsystem;
 
-public class SwerveJoystickCmd extends Command {
+public class ReefLockCmd extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
-    private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction, slowSupplier;
+    private final Supplier<Double> xSpdFunction, ySpdFunction, slowSupplier;
     private final Supplier<Boolean> fieldOrientedFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter, slowX, slowY;
     private final ElevatorSubsystem m_ElevatorSubsystem;
     double speedModifer;
-    public SwerveJoystickCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
-            Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
+
+    private final PIDController reefLockPID = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+
+    private Translation2d targetReef;
+    public ReefLockCmd(SwerveSubsystem swerveSubsystem, ElevatorSubsystem elevatorSubsystem,
+            Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction,
             Supplier<Boolean> fieldOrientedFunction, Supplier<Double> slowSupplier) {
         this.swerveSubsystem = swerveSubsystem;
         this.m_ElevatorSubsystem = elevatorSubsystem;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
-        this.turningSpdFunction = turningSpdFunction;
         this.fieldOrientedFunction = fieldOrientedFunction;
         this.slowSupplier = slowSupplier;
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
@@ -42,16 +50,19 @@ public class SwerveJoystickCmd extends Command {
     @Override
     public void initialize() {
         speedModifer = 1;
+        targetReef = DriverStation.getAlliance().get() == Alliance.Red ? DriveConstants.kRedReefPos : DriveConstants.kBlueReefPos;
     }
 
     @Override
     public void execute() {
-
-       
         // 1. Get real-time joystick inputs
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
-        double turningSpeed = turningSpdFunction.get();
+        Pose2d swervePose = swerveSubsystem.getPose();
+        Rotation2d targetRotation = Rotation2d.fromRadians(Math.atan2(targetReef.getY() - swervePose.getY(), targetReef.getX() - swervePose.getX()));
+        Rotation2d error = swervePose.getRotation().minus(targetRotation);
+
+        double turningSpeed = reefLockPID.calculate(error.getRadians(), 0);
         
         if (slowSupplier.get() > 0.5) {
             speedModifer = 0.25;
@@ -64,31 +75,25 @@ public class SwerveJoystickCmd extends Command {
         if (m_ElevatorSubsystem.getEncoderPosition() <= ElevatorConstants.kThirdLevel) {
             // 2. Apply deadband
             xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
-            ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = speedModifer * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
-        }
+            ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;        }
         else {
             xSpeed = speedModifer * 0.5 * Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
-            ySpeed = speedModifer * 0.5 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = speedModifer * 0.5 * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
-        }
+            ySpeed = speedModifer * 0.5 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;        }
         
         // 3. Make the driving smoother
         if (slowSupplier.get() < 0.5) {
             xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-            turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
 
         }
         else {
             xSpeed = slowX.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
             ySpeed = slowY.calculate(ySpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
-            turningSpeed = turningLimiter.calculate(turningSpeed)
-                * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
 
         }
 
+        turningSpeed *= DriveConstants.kAutoAimMaxAngularSpeed;
+        turningSpeed = Math.max(Math.min(turningSpeed, DriveConstants.kAutoAimMaxAngularSpeed), -DriveConstants.kAutoAimMaxAngularSpeed);
 
         var alliance = DriverStation.getAlliance();
         var invert = 1;
