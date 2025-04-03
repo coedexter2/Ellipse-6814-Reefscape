@@ -58,7 +58,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Commands.LimelightUpdate;
-import frc.robot.Commands.LoadCmd;
 import frc.robot.Commands.SwerveJoystickCmd;
 import frc.robot.Subsystems.ArmSubsystem;
 import frc.robot.Subsystems.ClimbSubsystem;
@@ -132,26 +131,9 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
 
     new JoystickButton(m_DriveJoystick, 0).whileTrue(LockedSwerve);
 
-    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
-
-    // ground intake commands:
-    // intake itself
-    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose).
-                        raceWith(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed)).
-                        andThen(new ArmCmd(m_Arm, ArmConstants.kUpPose)));
-
-    // deposite
-    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new LoadCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed).withTimeout(1));
-
-    // set L1 
-    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new ArmCmd(m_Arm, ArmConstants.kL1Pose));
-
-    // deposite L1 and go back 
-    new JoystickButton(m_ElevatorJoystick, 0).onTrue(new LoadCmd(m_Ground, GroundIntakeConstants.kGroundOuttakeSpeed).
-                                                                withTimeout(1).
-                                                                andThen(new ArmCmd(m_Arm, ArmConstants.kDownPose)));
 
     new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
     new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
@@ -164,6 +146,14 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
     new JoystickButton(m_DriveJoystick, 6).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
     
+    new JoystickButton(m_ElevatorJoystick, 7).onTrue(new ArmCmd(m_Arm, ArmConstants.kUpPose).andThen(new IntakeCmd(m_Out, 0)).withTimeout(1));
+    new JoystickButton(m_ElevatorJoystick, 5).onTrue(new ArmCmd(m_Arm, ArmConstants.kL1Pose)); 
+    new JoystickButton(m_ElevatorJoystick, 8).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose)); 
+    
+    new JoystickButton(m_ElevatorJoystick, 6).onTrue(new ArmCmd(m_Arm, ArmConstants.kIntakePose).
+                            alongWith(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed)));
+    new JoystickButton(m_ElevatorJoystick, 3).onTrue(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundOuttakeSpeed).
+                                                                  withTimeout(GroundIntakeConstants.kOuttakeTimeout));
     // new JoystickButton(m_DriveJoystick, 2).whileTrue(new OuttakeCmd(m_Out, 1));
 
     // SmartDashboard.putNumber("ks", 0);
