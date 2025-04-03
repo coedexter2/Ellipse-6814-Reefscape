@@ -54,12 +54,13 @@ public class SwerveJoystickCmd extends Command {
         double turningSpeed = turningSpdFunction.get();
         
         if (slowSupplier.get() > 0.5) {
-            speedModifer = 0.25;
+            speedModifer = 0.5;
 
         }
         else {
             speedModifer = 1;
         }
+
 
         if (m_ElevatorSubsystem.getEncoderPosition() <= ElevatorConstants.kThirdLevel) {
             // 2. Apply deadband
