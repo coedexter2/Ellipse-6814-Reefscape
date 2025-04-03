@@ -2,12 +2,8 @@ package frc.robot;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import java.util.Dictionary;
-import java.util.Set;
-
 import com.pathplanner.lib.config.PIDConstants;
 
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
@@ -170,22 +166,18 @@ public class Constants {
         public static final double kPhysicalMaxSpeedMetersPerSecond = (ModuleConstants.kMaxMotorRPM / (1 / ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI)/ 60;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = (kPhysicalMaxSpeedMetersPerSecond / Units.inchesToMeters(35)) * 2 * Math.PI;
 
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond * 0.9; //* 0.6875 * 1.2
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond * 0.6875 * 1.2;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond * 0.2;
         
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
 
-        public static final double kP = 0.8;
-        public static final double kI = 0.2;
-        public static final double kD = 0.03;
-        public static final double kAutoAimMaxAngularSpeed = kTeleDriveMaxAngularSpeedRadiansPerSecond * 0.5;
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
 
-        public static final int[] kRedStationTags = {2,1};
-        public static final int[] kBlueStationTags =  {13,12};
-
-        public static final Translation2d kBlueReefPos = new Translation2d(4.490, 4.020);
-        public static final Translation2d kRedReefPos = new Translation2d(13.056, 4.020);
+        public static final int[] kBlueStationTags = {2,1};
+        public static final int[] kRedStationTags =  {13,12};
     }
 
     public static final class OIConstants {
@@ -195,20 +187,18 @@ public class Constants {
         public static final int kDriverYAxis = 0;
         public static final int kDriverXAxis = 1;
         public static final int kDriverRotAxis = 4;
-        public static final int kDriverFieldOrientedButtonIdx = 2;
+        public static final int kDriverFieldOrientedButtonIdx = 1;
 
         public static final double kDeadband = 0.1;
 }
 
 public static final class AutoAlignConstants
 {
-    public static final double kLeftReefOffset = Units.inchesToMeters(-10.25);
-    public static final double kRightReefOffset = Units.inchesToMeters(4.25);
+    public static final double kLeftReefOffset = Units.inchesToMeters(-9);
+    public static final double kRightReefOffset = Units.inchesToMeters(5);
     
     public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
     public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
-
-    public static final Set<Integer> kFlippedDirectionTags = Set.of(17, 18, 19, 6, 7, 8); // To make sure the bot goes to the drivers' right when they press right
 
     // Size of bot in Y Axis (including bumpers) see diagram
     public static final double kBotYSize = Units.inchesToMeters(36); //TODO: Get the correct botysize

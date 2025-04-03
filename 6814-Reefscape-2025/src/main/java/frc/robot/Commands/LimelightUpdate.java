@@ -30,7 +30,7 @@ public class LimelightUpdate extends Command{
 
     @Override
     public void initialize() {
-        // LimelightHelpers.SetIMUMode("", 2);
+        LimelightHelpers.SetIMUMode("", 2);
     }
 
     @Override
