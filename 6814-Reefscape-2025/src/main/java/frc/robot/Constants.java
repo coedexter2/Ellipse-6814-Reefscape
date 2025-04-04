@@ -16,8 +16,13 @@ public class Constants {
         public static final double kOuttakeSpeed = -1.0;
         public static final double kIntakeSpeed = -0.3;
         public static final double kOuttakeTimeout = 1;
+        public static final double kOuttakeMotorGearRatio = (1.0 / 31.0);
 
         public static SparkMaxConfig kOuttakeMotorConfig = new SparkMaxConfig();
+
+        public static final double Rot2inches = 3 * Math.PI * kOuttakeMotorGearRatio;
+
+        public static final double kClearencePos = 0;
     
     }
     public static final class ClimbConstants {
