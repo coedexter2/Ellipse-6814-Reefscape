@@ -44,6 +44,7 @@ import frc.robot.Commands.ClimbCmd;
 import frc.robot.Commands.ClimbHomeCmd;
 import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Commands.GroundIntakeCmd;
+import frc.robot.Commands.IntakeClearence;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -149,9 +150,18 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     // // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
-    new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
-    new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
-    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
+    new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel).
+                                              alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed, OuttakeConstants.kClearencePos))
+                                              .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
+
+    new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel).
+                                              alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed, OuttakeConstants.kClearencePos))
+                                              .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
+
+    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel).
+                                              alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed, OuttakeConstants.kClearencePos))
+                                              .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
+
     new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new ClimbCmd(m_Climb, ClimbConstants.kClimbSetpoint, ClimbConstants.kClimbSpeed).onlyIf(()->m_ElevatorJoystick.getRawAxis(3) > 0.5));

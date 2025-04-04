@@ -6,7 +6,6 @@ import frc.robot.Subsystems.OuttakeSubsystem;
 public class IntakeCmd extends Command {
     private final OuttakeSubsystem m_OuttakeSubsystem;
     private final double speed;
-    private boolean broken;
 
     public IntakeCmd(OuttakeSubsystem subsystem, double speed) 
     {
@@ -16,33 +15,11 @@ public class IntakeCmd extends Command {
     }
 
     @Override
-    public void initialize() {
-        broken = false;
-    }
-
-    @Override
     public void execute() 
     {
         m_OuttakeSubsystem.setMotor(speed);
 
         SmartDashboard.putBoolean("beambreak", m_OuttakeSubsystem.isBroken());
-        SmartDashboard.putBoolean("broken", broken);
-    }
-
-    public boolean finish() {
-        
-        if (m_OuttakeSubsystem.isBroken()) {
-            
-            SmartDashboard.putBoolean("isbrokenbeam", false);
-            broken = true;
-        }
-
-        if (broken && !m_OuttakeSubsystem.isBroken()){
-
-            SmartDashboard.putBoolean("isbrokenbeam", false);
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -55,6 +32,6 @@ public class IntakeCmd extends Command {
     @Override
     public boolean isFinished() 
     {
-        return finish();
+        return m_OuttakeSubsystem.isBroken();
     }
 }
