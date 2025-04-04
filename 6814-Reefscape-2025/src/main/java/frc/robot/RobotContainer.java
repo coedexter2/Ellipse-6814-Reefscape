@@ -50,6 +50,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
+import frc.robot.Commands.ReefLockCmd;
 import frc.robot.Commands.SecureCoral;
 import frc.robot.Commands.SourceLockCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
