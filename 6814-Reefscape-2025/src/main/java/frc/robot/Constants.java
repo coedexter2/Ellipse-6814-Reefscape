@@ -265,6 +265,10 @@ public static final class GroundIntakeConstants
     public static final double kGroundOuttakeSpeed = 0;
 
     public static final double kOuttakeTimeout = 1;
+
+    public static final double kArmEncoderRot2Meters = 0; //FIX THIS!!!!!
+
+    public static final double kL1Pose = 0; //fix this
 }
 
 

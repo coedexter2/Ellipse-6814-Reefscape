@@ -50,6 +50,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Commands.IntakeCmd;
 import frc.robot.Commands.OuttakeCmd;
+import frc.robot.Commands.SecureCoral;
 import frc.robot.Commands.SourceLockCmd;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -171,7 +172,8 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     new JoystickButton(m_DriveJoystick, 6).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
     
     new JoystickButton(m_ElevatorJoystick, 7).onTrue(new ArmCmd(m_Arm, ArmConstants.kUpPose).andThen(new IntakeCmd(m_Out, 0)).withTimeout(1));
-    new JoystickButton(m_ElevatorJoystick, 5).onTrue(new ArmCmd(m_Arm, ArmConstants.kL1Pose)); 
+    new JoystickButton(m_ElevatorJoystick, 5).onTrue(new SecureCoral(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed, GroundIntakeConstants.kL1Pose)
+                                                        .andThen(new ArmCmd(m_Arm, ArmConstants.kL1Pose))); 
     new JoystickButton(m_ElevatorJoystick, 8).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose)); 
     
     new JoystickButton(m_ElevatorJoystick, 6).onTrue(new ArmCmd(m_Arm, ArmConstants.kIntakePose).
