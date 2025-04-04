@@ -82,6 +82,8 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
+  public final Command m_limelightUpdater = new LimelightUpdate(m_Swerve);
+
   // private final ClimbSubsystem m_Climb = new ClimbSubsystem();
 
   
@@ -100,6 +102,13 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
       () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
       () -> m_DriveJoystick.getRawAxis(3)));
 
+      private final ParallelCommandGroup ReefLockSwerve = new ParallelCommandGroup(new ReefLockCmd(
+        m_Swerve, m_Elevator,
+        () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverXAxis),
+        () -> -m_DriveJoystick.getRawAxis(Constants.OIConstants.kDriverYAxis),
+        () -> m_DriveJoystick.getRawButton(Constants.OIConstants.kDriverFieldOrientedButtonIdx),
+        () -> m_DriveJoystick.getRawAxis(3)), new LimelightUpdate(m_Swerve));
+
    
   // public Command ElevateOutOne = new ElevatorCommand(m_Elevator, Constants.ElevatorConstants.kFirstLevel)
   // .andThen(new WaitCommand(0.5).andThen(new OuttakeCmd(m_Out, Constants.OuttakeConstants.kOuttakeSpeed)));
@@ -116,7 +125,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
 
   public RobotContainer() {
 
-    NamedCommands.registerCommand("Outtake", new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(2));
+    NamedCommands.registerCommand("Outtake", new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(0.65));
     NamedCommands.registerCommand("Intake", new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
 
     NamedCommands.registerCommand("Elevator 1", new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
@@ -124,16 +133,21 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     NamedCommands.registerCommand("Elevator 3", new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
     NamedCommands.registerCommand("Elevator 4", new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
 
+    NamedCommands.registerCommand("Align Left", new AutoAlign(m_Swerve, ReefAlignment.LEFT).withTimeout(3));
+    NamedCommands.registerCommand("Align Right", new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
+
   NamedCommands.registerCommand("Limelight", new LimelightUpdate(m_Swerve));
 
 
    m_Swerve.setDefaultCommand(Swerve);
 
-    new JoystickButton(m_DriveJoystick, 0).whileTrue(LockedSwerve);
 
-    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
-    // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
-    new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
+   new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
+   new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
+
+    // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
+    // // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
+    // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
     new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
     new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));

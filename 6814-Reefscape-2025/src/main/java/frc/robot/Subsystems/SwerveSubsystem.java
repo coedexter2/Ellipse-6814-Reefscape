@@ -72,14 +72,8 @@ public class SwerveSubsystem extends SubsystemBase {
         private Field2d field = new Field2d();
         
 
-        private final SwerveDrivePoseEstimator m_poseEstimator = 
-            new SwerveDrivePoseEstimator(DriveConstants.kDriveKinematics, getRotation2d(), new SwerveModulePosition[]{
-                    frontLeft.getPosition(),
-                    backLeft.getPosition(),
-                    frontRight.getPosition(),
-                    backRight.getPosition()
-                }, new Pose2d(0, 0, DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.k180deg : Rotation2d.kZero)); //Fixes spiraling
-            
+        private final SwerveDrivePoseEstimator m_poseEstimator;
+
                 public SwerveSubsystem() {
 
                     if (DriverStation.getAlliance().get() == Alliance.Blue){
@@ -89,6 +83,12 @@ public class SwerveSubsystem extends SubsystemBase {
                     }
 
 
+                    m_poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.kDriveKinematics, getRotation2d(), new SwerveModulePosition[]{
+                        frontLeft.getPosition(),
+                        backLeft.getPosition(),
+                        frontRight.getPosition(),
+                        backRight.getPosition()
+                    }, new Pose2d(0, 0, DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.k180deg : Rotation2d.kZero));
 
                     m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1, 1, 999999999));
 
