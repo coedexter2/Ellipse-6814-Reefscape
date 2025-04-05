@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("matchtime", DriverStation.getMatchTime());
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putBoolean("Beambreaker", m_robotContainer.m_Out.isBroken());
+    SmartDashboard.putNumber("Arm Rotation", m_robotContainer.m_Arm.getEncoderPosition());
   }
 
   @Override

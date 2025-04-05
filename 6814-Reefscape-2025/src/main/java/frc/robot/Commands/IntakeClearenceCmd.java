@@ -5,16 +5,22 @@ import frc.robot.Subsystems.OuttakeSubsystem;
 public class IntakeClearenceCmd extends Command {
     private final OuttakeSubsystem m_OuttakeSubsystem;
     private final double speed;
-    private final double setpoint;
+    private final double distance;
+    private double initial = 0;
 
-    public IntakeClearenceCmd(OuttakeSubsystem subsystem, double speed, double setpoint) 
+    public IntakeClearenceCmd(OuttakeSubsystem subsystem, double speed, double distance) 
     {
         this.speed = speed;
-        this.setpoint = setpoint;
+        this.distance = distance;
         m_OuttakeSubsystem = subsystem;
         addRequirements(subsystem);
     }
 
+    @Override
+    public void initialize() {
+        initial = m_OuttakeSubsystem.getEncoder();
+    }
+    
     @Override
     public void execute() 
     {
@@ -25,13 +31,13 @@ public class IntakeClearenceCmd extends Command {
     public void end(boolean interrupted)
     {
         m_OuttakeSubsystem.setMotor(0);
-        m_OuttakeSubsystem.resetEncoder();
     }
 
 
     @Override
     public boolean isFinished() 
     {
-        return m_OuttakeSubsystem.getEncoder() >= setpoint;
+        System.out.println("Just finished going to " + distance + "!");
+        return m_OuttakeSubsystem.getEncoder() <= initial - distance || m_OuttakeSubsystem.getEncoder() >= initial + distance;
     }
 }

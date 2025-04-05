@@ -22,7 +22,7 @@ public class ArmSubsystem extends SubsystemBase{
 
     public void setMotor(double speed) 
     {
-            m_arm.setVoltage(speed);
+            m_arm.setVoltage(-speed);
     }
 
     public void resetEncoder()
@@ -32,11 +32,11 @@ public class ArmSubsystem extends SubsystemBase{
 
     public double getEncoderPosition() {
         
-        return m_encoder.getPosition() * ArmConstants.kArmEncoderRot2Meters;
+        return -m_encoder.getPosition() * ArmConstants.kArmEncoderRot2Meters;
     }
 
     public double getEncoderVelocity() {
 
-        return m_encoder.getVelocity() * ArmConstants.kArmEncoderRot2Meters;
+        return -m_encoder.getVelocity() * ArmConstants.kArmEncoderRot2Meters;
     }
 }

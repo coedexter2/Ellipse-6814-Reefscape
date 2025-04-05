@@ -81,7 +81,7 @@ public class RobotContainer {
   private final Joystick m_DriveJoystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   public final Joystick m_ElevatorJoystick = new Joystick(OIConstants.kElevatorJoystickPort);
   public final OuttakeSubsystem m_Out = new OuttakeSubsystem();
-  private final ArmSubsystem m_Arm = new ArmSubsystem();
+  public final ArmSubsystem m_Arm = new ArmSubsystem();
 private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
 
   private final SendableChooser<Command> autoChooser;
@@ -150,9 +150,12 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
    new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
-    new JoystickButton(m_ElevatorJoystick, 4).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 1)
-    .andThen(new ElevatorCommand(m_Elevator, Units.inchesToMeters(5)).raceWith(new WaitCommand(0.5)
-    .andThen(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, Units.inchesToMeters(1.5))))));
+    // new JoystickButton(m_ElevatorJoystick, 4).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 1)
+    // .andThen(new ElevatorCommand(m_Elevator, Units.inchesToMeters(9))
+    // .raceWith(new WaitCommand(0.5)))
+    // .andThen(new IntakeClearenceCmd(m_Out, OuttakeConstants.kIntakeSpeed, 4.5))
+    // .andThen((new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)
+    // .alongWith(new IntakeClearenceCmd(m_Out, -OuttakeConstants.kIntakeSpeed, -4.5)))));
     
     new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 2).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     new JoystickButton(m_ElevatorJoystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
@@ -213,14 +216,14 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     HttpCamera httpCamera = new HttpCamera("Limelight Camera", "http://limelight.local:5800");
     HttpCamera intakeCamera = new HttpCamera("Intake Camera", "http://limelight-back.local:5800");
     
-    SmartDashboard.putNumber("ArmKs", 0);
-    SmartDashboard.putNumber("ArmKg", 0);
-    SmartDashboard.putNumber("ArmKv", 0);
-    SmartDashboard.putNumber("ArmKa", 0);
+    // SmartDashboard.putNumber("ArmKs", 0);
+    // SmartDashboard.putNumber("ArmKg", 0);
+    // SmartDashboard.putNumber("ArmKv", 0);
+    // SmartDashboard.putNumber("ArmKa", 0);
 
-    SmartDashboard.putNumber("ArmKp", 0);
-    SmartDashboard.putNumber("ArmKi", 0);
-    SmartDashboard.putNumber("ArmKd", 0);
+    // SmartDashboard.putNumber("ArmKp", 0);
+    // SmartDashboard.putNumber("ArmKi", 0);
+    // SmartDashboard.putNumber("ArmKd", 0);
 
     CameraServer.addCamera(httpCamera);
     CameraServer.addCamera(intakeCamera);
