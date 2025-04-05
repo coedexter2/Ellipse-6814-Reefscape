@@ -209,8 +209,8 @@ public class Constants {
 
 public static final class AutoAlignConstants
 {
-    public static final double kLeftReefOffset = Units.inchesToMeters(-10.25);
-    public static final double kRightReefOffset = Units.inchesToMeters(4.25);
+    public static final double kLeftReefOffset = Units.inchesToMeters(-(13.0 / 2.0) + 2.0); // for ursula, this is -10.25
+    public static final double kRightReefOffset = Units.inchesToMeters((13.0 / 2.0) + 2.0); // for ursula, this is 4.25
     
     public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
     public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
@@ -234,7 +234,7 @@ public static final class ArmConstants
 {
     public static final int kArmMotorPort = 9; // fix this 
 
-    public static final double kArmEncoderRot2Meters = 0; // I'll fix this 
+    public static final double kArmEncoderRot2Meters = 1 / 252; // I'll fix this 
 
     //feedforward
     public static final double kS = 0.0;

@@ -204,6 +204,15 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     // SmartDashboard.putNumber("l2", 0);
     HttpCamera httpCamera = new HttpCamera("Limelight Camera", "http://limelight.local:5800");
     HttpCamera intakeCamera = new HttpCamera("Intake Camera", "http://limelight-back.local:5800");
+    
+    SmartDashboard.putNumber("ArmKs", 0);
+    SmartDashboard.putNumber("ArmKg", 0);
+    SmartDashboard.putNumber("ArmKv", 0);
+    SmartDashboard.putNumber("ArmKa", 0);
+
+    SmartDashboard.putNumber("ArmKp", 0);
+    SmartDashboard.putNumber("ArmKi", 0);
+    SmartDashboard.putNumber("ArmKd", 0);
 
     CameraServer.addCamera(httpCamera);
     CameraServer.addCamera(intakeCamera);
