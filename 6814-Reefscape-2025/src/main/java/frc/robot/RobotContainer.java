@@ -150,7 +150,10 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
    new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
-    new JoystickButton(m_ElevatorJoystick, 4).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 1).andThen(new ElevatorCommand(m_Elevator, Units.inchesToMeters(5))).andThen(null));
+    new JoystickButton(m_ElevatorJoystick, 4).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 1)
+    .andThen(new ElevatorCommand(m_Elevator, Units.inchesToMeters(5)).raceWith(new WaitCommand(0.5)
+    .andThen(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, Units.inchesToMeters(1.5))))));
+    
     new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 2).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     new JoystickButton(m_ElevatorJoystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
     //new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).andThen(new IntakeClearenceCmd(m_Out, OuttakeConstants.kIntakeSpeed, OuttakeConstants.kScorePos)));
