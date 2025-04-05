@@ -217,11 +217,11 @@ public static final class AutoAlignConstants
     public static final double kLeftReefOffset = Units.inchesToMeters(-(13.0 / 2.0) - 1.5); // for ursula, this is -10.25
     public static final double kRightReefOffset = Units.inchesToMeters((13.0 / 2.0) - 1.5); // for ursula, this is 4.25
     
-    // public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
-    // public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
+    public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
+    public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
 
-    public static final int[] kRedReefTags = { 17, 18, 19, 20, 21, 22 };
-    public static final int[] kBlueReefTags =  {  6,  7,  8,  9, 10, 11 };
+    // public static final int[] kRedReefTags = { 17, 18, 19, 20, 21, 22 };
+    // public static final int[] kBlueReefTags =  {  6,  7,  8,  9, 10, 11 };
 
     public static final Set<Integer> kFlippedDirectionTags = Set.of(17, 18, 19, 6, 7, 8); // To make sure the bot goes to the drivers' right when they press right
 
@@ -242,7 +242,7 @@ public static final class ArmConstants
 {
     public static final int kArmMotorPort = 9; // fix this 
 
-    public static final double kArmEncoderRot2Meters = 1 / 252; // I'll fix this 
+    public static final double kArmEncoderRot2Meters = 1 / 210.0; // I'll fix this 
 
     //feedforward
     public static final double kS = 0.0;
