@@ -10,11 +10,13 @@ public class IntakeCmd extends Command {
     private boolean delayFinished = false;
     private boolean beamBroken = false;
     private double brokenDistance;
+    private double delayDistance;
 
-    public IntakeCmd(OuttakeSubsystem subsystem, double speed) 
+    public IntakeCmd(OuttakeSubsystem subsystem, double speed, double delayDistance) 
     {
         this.speed = speed;
         m_OuttakeSubsystem = subsystem;
+        this.delayDistance = delayDistance;
         addRequirements(subsystem);
     }
 
@@ -33,7 +35,7 @@ public class IntakeCmd extends Command {
         if(m_OuttakeSubsystem.isBroken() && !beamBroken) { beamBroken = true; brokenDistance = m_OuttakeSubsystem.getEncoder(); }
         SmartDashboard.putNumber("brokenDistance", brokenDistance);
         SmartDashboard.putNumber("Outtake Encoder", m_OuttakeSubsystem.getEncoder());
-        if(beamBroken && m_OuttakeSubsystem.getEncoder() <= brokenDistance - 2)
+        if(beamBroken && m_OuttakeSubsystem.getEncoder() <= brokenDistance - delayDistance)
         {
             delayFinished = true;
         }
