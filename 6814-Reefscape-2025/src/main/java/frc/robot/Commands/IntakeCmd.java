@@ -7,12 +7,23 @@ import frc.robot.Subsystems.OuttakeSubsystem;
 public class IntakeCmd extends Command {
     private final OuttakeSubsystem m_OuttakeSubsystem;
     private final double speed;
+    private boolean delayFinished = false;
+    private boolean beamBroken = false;
+    private double brokenDistance;
+    private double delayDistance;
 
-    public IntakeCmd(OuttakeSubsystem subsystem, double speed) 
+    public IntakeCmd(OuttakeSubsystem subsystem, double speed, double delayDistance) 
     {
         this.speed = speed;
         m_OuttakeSubsystem = subsystem;
+        this.delayDistance = delayDistance;
         addRequirements(subsystem);
+    }
+
+    @Override
+    public void initialize() {
+        delayFinished = false;
+        beamBroken = false;
     }
 
     @Override
@@ -21,6 +32,13 @@ public class IntakeCmd extends Command {
         m_OuttakeSubsystem.setMotor(speed);
 
         SmartDashboard.putNumber("PLEASE WORK PLEASE", Timer.getFPGATimestamp());
+        if(m_OuttakeSubsystem.isBroken() && !beamBroken) { beamBroken = true; brokenDistance = m_OuttakeSubsystem.getEncoder(); }
+        SmartDashboard.putNumber("brokenDistance", brokenDistance);
+        SmartDashboard.putNumber("Outtake Encoder", m_OuttakeSubsystem.getEncoder());
+        if(beamBroken && m_OuttakeSubsystem.getEncoder() <= brokenDistance - delayDistance)
+        {
+            delayFinished = true;
+        }
     }
 
     @Override
@@ -35,6 +53,6 @@ public class IntakeCmd extends Command {
     public boolean isFinished() 
     {
         
-        return m_OuttakeSubsystem.isBroken();
+        return delayFinished;
     }
 }

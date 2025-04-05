@@ -130,7 +130,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
   public RobotContainer() {
 
     NamedCommands.registerCommand("Outtake", new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(0.65));
-    NamedCommands.registerCommand("Intake", new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));
+    NamedCommands.registerCommand("Intake", new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 2));
 
     NamedCommands.registerCommand("Elevator 1", new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
     NamedCommands.registerCommand("Elevator 2", new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
@@ -150,7 +150,8 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
    new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
-    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
+    new JoystickButton(m_ElevatorJoystick, 4).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 1).andThen(new ElevatorCommand(m_Elevator, Units.inchesToMeters(5))).andThen(null));
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed, 2).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     new JoystickButton(m_ElevatorJoystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
     //new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).andThen(new IntakeClearenceCmd(m_Out, OuttakeConstants.kIntakeSpeed, OuttakeConstants.kScorePos)));
 

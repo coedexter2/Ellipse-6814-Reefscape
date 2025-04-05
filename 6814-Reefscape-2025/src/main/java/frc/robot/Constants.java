@@ -61,12 +61,12 @@ public class Constants {
         
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;
-        public static final double kG = 0.0367;
-        public static final double kV = 0.470000;
+        public static final double kG = 0.035000;
+        public static final double kV = 0.424000;
         public static final double kA = 0.0;
 
-        public static final double kMaxVelocity = 0.3;
-        public static final double kMaxAcceleration = 0.3;
+        public static final double kMaxVelocity = 1.3;
+        public static final double kMaxAcceleration = 2.2;
 
         // PID CONSTANTS
         public static final double kP = 0.0;
@@ -74,16 +74,16 @@ public class Constants {
         public static final double kD = 0.0;
 
         // LEVELS
-        public static final double kFirstLevel = 0.0;
+        public static final double kFirstLevel = Units.inchesToMeters(0.05);
         // public static final double kSecondLevel = Units.inchesToMeters(12.49 + 4); //12.49
         // public static final double kThirdLevel = Units.inchesToMeters(28.33 + 4); //28.33
         // public static final double kFourthLevel = Units.inchesToMeters(53.36); //54.36
 
         public static final double kSecondLevel = Units.inchesToMeters(31); // if 31 is right, 16 more will get l3, 40+31 will get l4
         public static final double kThirdLevel = Units.inchesToMeters(31+16); // 
-        public static final double kFourthLevel = Units.inchesToMeters(40+31-5); //54.36
+        public static final double kFourthLevel = Units.inchesToMeters(40+31); //54.36
 
-        public static final double kSourceIntake = Units.inchesToMeters(16);
+        public static final double kSourceIntake = Units.inchesToMeters(16.6);
     }
 
     public static final class ModuleConstants {
@@ -214,11 +214,14 @@ public class Constants {
 
 public static final class AutoAlignConstants
 {
-    public static final double kLeftReefOffset = Units.inchesToMeters(-(13.0 / 2.0) + 2.0); // for ursula, this is -10.25
-    public static final double kRightReefOffset = Units.inchesToMeters((13.0 / 2.0) + 2.0); // for ursula, this is 4.25
+    public static final double kLeftReefOffset = Units.inchesToMeters(-(13.0 / 2.0) - 1.5); // for ursula, this is -10.25
+    public static final double kRightReefOffset = Units.inchesToMeters((13.0 / 2.0) - 1.5); // for ursula, this is 4.25
     
-    public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
-    public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
+    // public static final int[] kBlueReefTags = { 17, 18, 19, 20, 21, 22 };
+    // public static final int[] kRedReefTags =  {  6,  7,  8,  9, 10, 11 };
+
+    public static final int[] kRedReefTags = { 17, 18, 19, 20, 21, 22 };
+    public static final int[] kBlueReefTags =  {  6,  7,  8,  9, 10, 11 };
 
     public static final Set<Integer> kFlippedDirectionTags = Set.of(17, 18, 19, 6, 7, 8); // To make sure the bot goes to the drivers' right when they press right
 

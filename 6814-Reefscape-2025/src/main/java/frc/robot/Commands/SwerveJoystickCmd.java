@@ -69,9 +69,9 @@ public class SwerveJoystickCmd extends Command {
             turningSpeed = speedModifer * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
         else {
-            xSpeed = speedModifer * 0.5 * Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
-            ySpeed = speedModifer * 0.5 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-            turningSpeed = speedModifer * 0.5 * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
+            xSpeed = speedModifer * 1.0 * Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
+            ySpeed = speedModifer * 1.0 * Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
+            turningSpeed = speedModifer * 1.0 * Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
         }
         
         // 3. Make the driving smoother
