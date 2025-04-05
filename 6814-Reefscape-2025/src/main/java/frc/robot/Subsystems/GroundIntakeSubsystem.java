@@ -19,7 +19,7 @@ public class GroundIntakeSubsystem extends SubsystemBase {
 
     public GroundIntakeSubsystem()  {
         
-        m_Out = new SparkMax(GroundIntakeConstants.kArmMotorPort, MotorType.kBrushless);
+        m_Out = new SparkMax(GroundIntakeConstants.kIntakeMotorPort, MotorType.kBrushless);
         m_Encoder = m_Out.getEncoder();
         OuttakeConstants.kOuttakeMotorConfig.idleMode(IdleMode.kBrake);
 
