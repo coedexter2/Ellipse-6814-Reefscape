@@ -87,6 +87,8 @@ public class ElevatorCommand extends Command {
         SmartDashboard.putNumber("elevator pos", m_elevatorSubsystem.getEncoderPosition());
         SmartDashboard.putNumber("timer", m_profilerTimer.get());
         SmartDashboard.putBoolean("bot destroy itself", robotIsTryingToDestroyItself);
+
+        SmartDashboard.putNumber("Elevator Velocity", nextSetpoint.velocity);
         
         m_elevatorSubsystem.setMotor(outputs);
     }

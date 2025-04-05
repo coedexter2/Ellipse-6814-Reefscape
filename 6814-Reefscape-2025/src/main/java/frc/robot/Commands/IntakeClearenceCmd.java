@@ -32,6 +32,6 @@ public class IntakeClearenceCmd extends Command {
     @Override
     public boolean isFinished() 
     {
-        return m_OuttakeSubsystem.getEncoder() == setpoint;
+        return m_OuttakeSubsystem.getEncoder() >= setpoint;
     }
 }

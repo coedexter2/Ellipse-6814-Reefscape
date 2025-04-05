@@ -36,7 +36,6 @@ public class OuttakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("1");
         SmartDashboard.putBoolean("Game Piece", isBroken());
         SmartDashboard.putBoolean("back", isBackBroken());
     }
