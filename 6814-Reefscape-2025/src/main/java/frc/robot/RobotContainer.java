@@ -44,7 +44,8 @@ import frc.robot.Commands.ClimbCmd;
 import frc.robot.Commands.ClimbHomeCmd;
 import frc.robot.Commands.ElevatorCommand;
 import frc.robot.Commands.GroundIntakeCmd;
-import frc.robot.Commands.IntakeClearence;
+import frc.robot.Commands.IntakeClearenceCmd;
+import frc.robot.Commands.IntakeClearenceCmd;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -149,7 +150,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
     new JoystickButton(m_ElevatorJoystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
-    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));//.alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).andThen(new IntakeClearenceCmd(m_Out, OuttakeConstants.kIntakeSpeed, OuttakeConstants.kScorePos)));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, OuttakeConstants.kOuttakeSpeed).withTimeout(0.5));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
