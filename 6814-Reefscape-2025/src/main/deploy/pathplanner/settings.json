@@ -1,5 +1,5 @@
 {
-  "robotWidth": 0.9144,
+  "robotWidth": 0.914,
   "robotLength": 0.9144,
   "holonomicMode": true,
   "pathFolders": [],
@@ -9,7 +9,7 @@
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 360.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 59.874,
+  "robotMass": 61.598,
   "robotMOI": 3.0,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.051,
@@ -28,5 +28,7 @@
   "brModuleY": -0.31115,
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
-  "robotFeatures": []
+  "robotFeatures": [
+    "{\"name\":\"Outtake\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.273,\"y\":0.051},\"size\":{\"width\":0.133,\"length\":0.2},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":true}}"
+  ]
 }
