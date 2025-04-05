@@ -44,7 +44,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Elevator 3"
+                              "name": "Elevator 4"
                             }
                           },
                           {
@@ -133,7 +133,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Elevator 1"
+                  "name": "Elevator Src"
                 }
               }
             ]
@@ -156,7 +156,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.75
+                        "waitTime": 2.0
                       }
                     },
                     {
@@ -166,7 +166,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Elevator 3"
+                              "name": "Elevator 4"
                             }
                           },
                           {

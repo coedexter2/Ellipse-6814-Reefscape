@@ -136,6 +136,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     NamedCommands.registerCommand("Elevator 2", new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
     NamedCommands.registerCommand("Elevator 3", new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
     NamedCommands.registerCommand("Elevator 4", new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    NamedCommands.registerCommand("Elevator Src", new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
 
     NamedCommands.registerCommand("Align Left", new AutoAlign(m_Swerve, ReefAlignment.LEFT).withTimeout(3));
     NamedCommands.registerCommand("Align Right", new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
@@ -149,8 +150,10 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
    new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     new JoystickButton(m_ElevatorJoystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
-    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).andThen(new IntakeClearenceCmd(m_Out, OuttakeConstants.kIntakeSpeed, OuttakeConstants.kScorePos)));
+    //new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).andThen(new IntakeClearenceCmd(m_Out, OuttakeConstants.kIntakeSpeed, OuttakeConstants.kScorePos)));
+
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, OuttakeConstants.kOuttakeSpeed).withTimeout(0.5));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
@@ -205,6 +208,15 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     // SmartDashboard.putNumber("l2", 0);
     HttpCamera httpCamera = new HttpCamera("Limelight Camera", "http://limelight.local:5800");
     HttpCamera intakeCamera = new HttpCamera("Intake Camera", "http://limelight-back.local:5800");
+    
+    SmartDashboard.putNumber("ArmKs", 0);
+    SmartDashboard.putNumber("ArmKg", 0);
+    SmartDashboard.putNumber("ArmKv", 0);
+    SmartDashboard.putNumber("ArmKa", 0);
+
+    SmartDashboard.putNumber("ArmKp", 0);
+    SmartDashboard.putNumber("ArmKi", 0);
+    SmartDashboard.putNumber("ArmKd", 0);
 
     CameraServer.addCamera(httpCamera);
     CameraServer.addCamera(intakeCamera);

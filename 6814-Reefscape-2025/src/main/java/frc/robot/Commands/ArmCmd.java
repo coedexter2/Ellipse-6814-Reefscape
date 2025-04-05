@@ -3,6 +3,7 @@ package frc.robot.Commands;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Subsystems.ArmSubsystem;
@@ -31,7 +32,18 @@ public class ArmCmd extends Command {
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        m_feedforward = new ArmFeedforward(SmartDashboard.getNumber("ArmKs", 0.0),
+                                                SmartDashboard.getNumber("ArmKg", 0.0),
+                                                SmartDashboard.getNumber("ArmKv", 0.0),
+                                                SmartDashboard.getNumber("ArmKa", 0.0));
+
+        m_PID.setPID(SmartDashboard.getNumber("ArmKp", 0.0),
+                     SmartDashboard.getNumber("ArmKi", 0.0),
+                     SmartDashboard.getNumber("ArmKd", 0.0));
+
+        SmartDashboard.putNumber("goal", position);
+    }
 
     @Override
     public void execute() 
@@ -47,6 +59,10 @@ public class ArmCmd extends Command {
         this.setpoint = nextSetpoint;
         
         m_ArmSubsystem.setMotor(outputs);
+
+        SmartDashboard.putNumber("elevatoroutput", outputs);
+        SmartDashboard.putNumber("profiler setpoint", nextSetpoint.position);
+        SmartDashboard.putNumber("elevator pos", m_ArmSubsystem.getEncoderPosition());
     }
 
     @Override
