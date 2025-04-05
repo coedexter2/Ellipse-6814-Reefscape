@@ -135,6 +135,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     NamedCommands.registerCommand("Elevator 2", new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
     NamedCommands.registerCommand("Elevator 3", new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
     NamedCommands.registerCommand("Elevator 4", new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+    NamedCommands.registerCommand("Elevator Src", new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
 
     NamedCommands.registerCommand("Align Left", new AutoAlign(m_Swerve, ReefAlignment.LEFT).withTimeout(3));
     NamedCommands.registerCommand("Align Right", new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
