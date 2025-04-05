@@ -17,14 +17,15 @@ public class OuttakeSubsystem extends SubsystemBase {
 
     private final SparkMax m_Out;
     private final DigitalInput m_Beam;
-    private final RelativeEncoder m_encoder;
+    private final DigitalInput m_BackBeam;
 
 
     public OuttakeSubsystem()  {
         
         m_Out = new SparkMax(OuttakeConstants.kOuttakeMotorPort, MotorType.kBrushless);
         m_Beam = new DigitalInput(OuttakeConstants.kBeamBreakPort);
-        m_encoder = m_Out.getEncoder();
+        m_BackBeam = new DigitalInput(OuttakeConstants.kBackBeamBreakPort);
+
 
         OuttakeConstants.kOuttakeMotorConfig.idleMode(IdleMode.kBrake);
         m_Out.configure(OuttakeConstants.kOuttakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -33,20 +34,19 @@ public class OuttakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        System.out.println("1");
         SmartDashboard.putBoolean("Game Piece", isBroken());
+        SmartDashboard.putBoolean("back", isBackBroken());
     }
 
     public boolean isBroken () {
         return !m_Beam.get();
     }
 
-    public double getEndcoderPosition(){
-        return m_encoder.getPosition() * OuttakeConstants.Rot2inches;
+    public boolean isBackBroken () {
+        return !m_BackBeam.get();
     }
 
-    public void resetEncoder(){
-        m_encoder.setPosition(0);
-    }
 
     public void setMotor (double speed) {
         m_Out.set(speed);

@@ -1,4 +1,5 @@
 package frc.robot.Commands;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.OuttakeSubsystem;
@@ -19,19 +20,21 @@ public class IntakeCmd extends Command {
     {
         m_OuttakeSubsystem.setMotor(speed);
 
-        SmartDashboard.putBoolean("beambreak", m_OuttakeSubsystem.isBroken());
+        SmartDashboard.putNumber("PLEASE WORK PLEASE", Timer.getFPGATimestamp());
     }
 
     @Override
     public void end(boolean interrupted)
     {
         m_OuttakeSubsystem.setMotor(0);
+        SmartDashboard.putNumber("thingtestaoisdufjasdfasjio", Timer.getFPGATimestamp());
     }
 
 
     @Override
     public boolean isFinished() 
     {
+        
         return m_OuttakeSubsystem.isBroken();
     }
 }

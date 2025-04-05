@@ -79,7 +79,7 @@ public class RobotContainer {
   public final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final Joystick m_DriveJoystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
   public final Joystick m_ElevatorJoystick = new Joystick(OIConstants.kElevatorJoystickPort);
-  private final OuttakeSubsystem m_Out = new OuttakeSubsystem();
+  public final OuttakeSubsystem m_Out = new OuttakeSubsystem();
   private final ArmSubsystem m_Arm = new ArmSubsystem();
 private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
 
@@ -148,21 +148,31 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
    new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
+    new JoystickButton(m_ElevatorJoystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));//.alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
+    new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, OuttakeConstants.kOuttakeSpeed).withTimeout(0.5));
+
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     // // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, 0.5).withTimeout(0.4).andThen(new WaitCommand(0.2).andThen(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1))));
     // new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out,Constants.OuttakeConstants.kOuttakeSpeed).withTimeout(1));
 
-    new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel).
-                                              alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed, OuttakeConstants.kClearencePos))
-                                              .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
+    // new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel).
+    //                                           alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed))
+    //                                           .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
 
-    new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel).
-                                              alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed, OuttakeConstants.kClearencePos))
-                                              .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
+    // new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel).
+    //                                           alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed))
+    //                                           .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
 
-    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel).
-                                              alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed, OuttakeConstants.kClearencePos))
-                                              .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
+    // new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel).
+    //                                           alongWith(new IntakeClearence(m_Out,m_Elevator,OuttakeConstants.kIntakeSpeed))
+    //                                           .andThen(new WaitCommand(1)).andThen(new IntakeCmd(m_Out, -OuttakeConstants.kIntakeSpeed)));
+
+    new POVButton(m_ElevatorJoystick, 0).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFourthLevel));
+
+    new POVButton(m_ElevatorJoystick, 90).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kThirdLevel));
+
+    new POVButton(m_ElevatorJoystick, 270).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSecondLevel));
 
     new POVButton(m_ElevatorJoystick, 180).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kFirstLevel));
 
@@ -172,15 +182,15 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
     new JoystickButton(m_DriveJoystick, 5).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.LEFT));
     new JoystickButton(m_DriveJoystick, 6).whileTrue(new AutoAlign(m_Swerve, ReefAlignment.RIGHT));
     
-    new JoystickButton(m_ElevatorJoystick, 7).onTrue(new ArmCmd(m_Arm, ArmConstants.kUpPose).andThen(new IntakeCmd(m_Out, 0)).withTimeout(1));
-    new JoystickButton(m_ElevatorJoystick, 5).onTrue(new SecureCoral(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed, GroundIntakeConstants.kL1Pose)
-                                                        .andThen(new ArmCmd(m_Arm, ArmConstants.kL1Pose))); 
-    new JoystickButton(m_ElevatorJoystick, 8).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose)); 
+    // new JoystickButton(m_ElevatorJoystick, 7).onTrue(new ArmCmd(m_Arm, ArmConstants.kUpPose).andThen(new IntakeCmd(m_Out, 0)).withTimeout(1));
+    // new JoystickButton(m_ElevatorJoystick, 5).onTrue(new SecureCoral(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed, GroundIntakeConstants.kL1Pose)
+    //                                                     .andThen(new ArmCmd(m_Arm, ArmConstants.kL1Pose))); 
+    // new JoystickButton(m_ElevatorJoystick, 8).onTrue(new ArmCmd(m_Arm, ArmConstants.kDownPose)); 
     
-    new JoystickButton(m_ElevatorJoystick, 6).onTrue(new ArmCmd(m_Arm, ArmConstants.kIntakePose).
-                            alongWith(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed)));
-    new JoystickButton(m_ElevatorJoystick, 3).onTrue(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundOuttakeSpeed).
-                                                                  withTimeout(GroundIntakeConstants.kOuttakeTimeout));
+    // new JoystickButton(m_ElevatorJoystick, 6).onTrue(new ArmCmd(m_Arm, ArmConstants.kIntakePose).
+    //                         alongWith(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundIntakeSpeed)));
+    // new JoystickButton(m_ElevatorJoystick, 3).onTrue(new GroundIntakeCmd(m_Ground, GroundIntakeConstants.kGroundOuttakeSpeed).
+    //                                                               withTimeout(GroundIntakeConstants.kOuttakeTimeout));
     // new JoystickButton(m_DriveJoystick, 2).whileTrue(new OuttakeCmd(m_Out, 1));
 
     // SmartDashboard.putNumber("ks", 0);

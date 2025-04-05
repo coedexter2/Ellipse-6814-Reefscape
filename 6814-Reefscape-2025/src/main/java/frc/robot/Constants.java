@@ -14,17 +14,14 @@ public class Constants {
 
     public static final class OuttakeConstants {
 
-        public static final int kOuttakeMotorPort = 31;
-        public static final int kBeamBreakPort = 0;
+        public static final int kOuttakeMotorPort = 21;
+        public static final int kBeamBreakPort = 6;
+        public static final int kBackBeamBreakPort = 7;
         public static final double kOuttakeSpeed = -1.0;
         public static final double kIntakeSpeed = -0.3;
         public static final double kOuttakeTimeout = 1;
-        public static final double kOuttakeMotorGearRatio = (1.0 / 31.0);
 
         public static SparkMaxConfig kOuttakeMotorConfig = new SparkMaxConfig();
-
-        public static final double Rot2inches = 3 * Math.PI * kOuttakeMotorGearRatio;
-
         public static final double kClearencePos = 0;
     
     }
@@ -43,13 +40,13 @@ public class Constants {
 
     public static final class ElevatorConstants {
 
-        public static final int kElevatorMotorPort = 30;
+        public static final int kElevatorMotorPort = 20;
         public static final int kElevatorLimitSwitchPort = 9;
 
         public static final double kPulleyDiameterMeter = Units.inchesToMeters(1.504);
         public static final double kElevatorMotorGearRatio = 1.0 / 15.0;
         public static final double kBeltPullMeters = kElevatorMotorGearRatio * Math.PI * kPulleyDiameterMeter;
-        public static final double kElevatorEncoderRot2Meters = 2 * kBeltPullMeters;
+        public static final double kElevatorEncoderRot2Meters = 3 * kBeltPullMeters;
         public static final double kElevatorHeightLimit = 0.0;
 
         public static final SparkMaxConfig kElevatorMotorConfig = new SparkMaxConfig();
@@ -59,12 +56,12 @@ public class Constants {
         
         // FEEDFORWARD CONSTANTS
         public static final double kS = 0.0;
-        public static final double kG = 0.021000;
-        public static final double kV = 0.642140;
+        public static final double kG = 0.0367;
+        public static final double kV = 0.470000;
         public static final double kA = 0.0;
 
-        public static final double kMaxVelocity = 1.25;
-        public static final double kMaxAcceleration = 0.85;
+        public static final double kMaxVelocity = 0.3;
+        public static final double kMaxAcceleration = 0.3;
 
         // PID CONSTANTS
         public static final double kP = 0.0;
@@ -73,10 +70,15 @@ public class Constants {
 
         // LEVELS
         public static final double kFirstLevel = 0.0;
-        public static final double kSecondLevel = Units.inchesToMeters(12.49 + 4); //12.49
-        public static final double kThirdLevel = Units.inchesToMeters(28.33 + 4); //28.33
-        public static final double kFourthLevel = Units.inchesToMeters(53.36); //54.36
-        public static final double kSourceIntake = 0.0;
+        // public static final double kSecondLevel = Units.inchesToMeters(12.49 + 4); //12.49
+        // public static final double kThirdLevel = Units.inchesToMeters(28.33 + 4); //28.33
+        // public static final double kFourthLevel = Units.inchesToMeters(53.36); //54.36
+
+        public static final double kSecondLevel = Units.inchesToMeters(31); // if 31 is right, 16 more will get l3, 40+31 will get l4
+        public static final double kThirdLevel = Units.inchesToMeters(31+16); // 
+        public static final double kFourthLevel = Units.inchesToMeters(40+31-5); //54.36
+
+        public static final double kSourceIntake = Units.inchesToMeters(16);
     }
 
     public static final class ModuleConstants {
@@ -137,15 +139,15 @@ public class Constants {
     
         public static final int kGyroPort = 0;
 
-        public static final int kFrontLeftDriveMotorPort = 8; //mod0
-        public static final int kBackLeftDriveMotorPort = 2;//mod1
-        public static final int kFrontRightDriveMotorPort = 4; //mod2
-        public static final int kBackRightDriveMotorPort = 6;//mod3
+        public static final int kFrontLeftDriveMotorPort = 5; //mod0
+        public static final int kBackLeftDriveMotorPort = 1;//mod1
+        public static final int kFrontRightDriveMotorPort = 7; //mod2
+        public static final int kBackRightDriveMotorPort = 3;//mod3
 
-        public static final int kFrontLeftTurningMotorPort = 7;//mod0
-        public static final int kBackLeftTurningMotorPort = 1;//mod1
-        public static final int kFrontRightTurningMotorPort = 3; //mod2
-        public static final int kBackRightTurningMotorPort = 5;//mod3
+        public static final int kFrontLeftTurningMotorPort = 6;//mod0
+        public static final int kBackLeftTurningMotorPort = 2;//mod1
+        public static final int kFrontRightTurningMotorPort = 8; //mod2
+        public static final int kBackRightTurningMotorPort = 4;//mod3
 
         public static final boolean kFrontLeftTurningEncoderReversed = true;
         public static final boolean kBackLeftTurningEncoderReversed = true;
@@ -160,17 +162,17 @@ public class Constants {
         public static final int kFrontLeftDriveAbsoluteEncoderPort = 0;
         public static final int kBackLeftDriveAbsoluteEncoderPort = 1;
         public static final int kFrontRightDriveAbsoluteEncoderPort = 2;
-        public static final int kBackRightDriveAbsoluteEncoderPort = 3;
+        public static final int kBackRightDriveAbsoluteEncoderPort = 4;
 
         public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = false;
         public static final boolean kBackLeftDriveAbsoluteEncoderReversed = false;
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -2.3; 
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 2.2; 
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 3; 
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.0; 
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -1.14; 
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -1.90; 
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 0.6; 
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 2.33; 
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = (ModuleConstants.kMaxMotorRPM / (1 / ModuleConstants.kDriveMotorGearRatio) * ModuleConstants.kWheelDiameterMeters * Math.PI)/ 60;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = (kPhysicalMaxSpeedMetersPerSecond / Units.inchesToMeters(35)) * 2 * Math.PI;
@@ -230,7 +232,7 @@ public static final class AutoAlignConstants
 
 public static final class ArmConstants
 {
-    public static final int kArmMotorPort = 0; // fix this 
+    public static final int kArmMotorPort = 9; // fix this 
 
     public static final double kArmEncoderRot2Meters = 0; // I'll fix this 
 
@@ -258,7 +260,7 @@ public static final class ArmConstants
 
 public static final class GroundIntakeConstants
 {
-    public static final int kArmMotorPort = 0; // fix this 
+    public static final int kIntakeMotorPort = 30; // fix this 
     public static final int kBeambreakPort = 0; // fix this 
 
     public static final double kGroundIntakeSpeed = 0;
@@ -266,6 +268,7 @@ public static final class GroundIntakeConstants
 
     public static final double kOuttakeTimeout = 1;
 
+    
     public static final double kArmEncoderRot2Meters = 0; //FIX THIS!!!!!
 
     public static final double kL1Pose = 0; //fix this

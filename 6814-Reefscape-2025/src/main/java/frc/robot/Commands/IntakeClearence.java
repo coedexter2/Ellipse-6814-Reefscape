@@ -7,13 +7,11 @@ public class IntakeClearence extends Command {
     private final OuttakeSubsystem m_OuttakeSubsystem;
     private final ElevatorSubsystem m_ElevatorSubsystem;
     private final double speed;
-    private final double setpoint;
 
-    public IntakeClearence(OuttakeSubsystem subsystem,ElevatorSubsystem elevatorSubsystem ,double speed, double setpoint) 
+    public IntakeClearence(OuttakeSubsystem subsystem,ElevatorSubsystem elevatorSubsystem ,double speed) 
     {
         m_ElevatorSubsystem = elevatorSubsystem;
         this.speed = speed;
-        this.setpoint = setpoint;
         m_OuttakeSubsystem = subsystem;
         addRequirements(subsystem);
     }
@@ -31,13 +29,12 @@ public class IntakeClearence extends Command {
     public void end(boolean interrupted)
     {
         m_OuttakeSubsystem.setMotor(0);
-        m_OuttakeSubsystem.resetEncoder();
     }
 
 
     @Override
     public boolean isFinished() 
     {
-        return m_OuttakeSubsystem.getEndcoderPosition() == setpoint;
+        return m_OuttakeSubsystem.isBackBroken();
     }
 }
