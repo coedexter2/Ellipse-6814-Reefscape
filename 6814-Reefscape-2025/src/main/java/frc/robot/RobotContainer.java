@@ -148,8 +148,7 @@ private final GroundIntakeSubsystem m_Ground = new GroundIntakeSubsystem();
    new JoystickButton(m_DriveJoystick, 1).whileTrue(LockedSwerve);
    new JoystickButton(m_DriveJoystick, 3).whileTrue(ReefLockSwerve);
 
-    new JoystickButton(m_ElevatorJoystick, 3).onTrue(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake));
-    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed));//.alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
+    new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
     new JoystickButton(m_ElevatorJoystick, 1).onTrue(new OuttakeCmd(m_Out, OuttakeConstants.kOuttakeSpeed).withTimeout(0.5));
 
     // new JoystickButton(m_ElevatorJoystick, 2).onTrue(new IntakeCmd(m_Out, OuttakeConstants.kIntakeSpeed).alongWith(new ElevatorCommand(m_Elevator, ElevatorConstants.kSourceIntake)));
